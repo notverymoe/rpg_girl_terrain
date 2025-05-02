@@ -110,7 +110,7 @@ module girl_grid_section(x_p, y_p, x_n, y_n) {
 			_girl_grid_slots();
 		}
 			
-		linear_extrude(grid_height+100)
+		linear_extrude(grid_height+100, convexity=4)
 		offset( lock_depth/2)
 		offset(-lock_depth/2)
 		square([grid_size,grid_size],center=true);
