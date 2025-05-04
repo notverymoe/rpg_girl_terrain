@@ -8,17 +8,17 @@ girl_lock();
 //translate([0,0,-1]) 
 //girl_slot();
 
-module girl_lock() {
+module girl_lock(center=true) {
 	$fn=12;
-	linear_extrude(lock_height, center=true)
+	linear_extrude(lock_height, center=center, convexity=2)
 	mirror_copy([0,1])
 	mirror_copy([1,0])
 	_girl_lock_part();
 }
 
-module girl_slot() {
+module girl_slot(center=true) {
 	$fn=12;
-	linear_extrude(lock_height+0.4, center=true)
+	linear_extrude(lock_height+0.4, center=center, convexity=2)
 	mirror_copy([0,1])
 	mirror_copy([1,0])
 	_girl_slot_part();
@@ -28,8 +28,8 @@ module _girl_slot_part() {
 	polygon([
 		[           0,      0.00],
 		[lock_width/2+0.30, 0.00],
-		[lock_width/2+0.30, 2.20],
-		[lock_width/2-0.45, 2.20],
+		[lock_width/2+0.30, lock_shoulder+0.2],
+		[lock_width/2-0.45, lock_shoulder+0.2],
 		[lock_width/2-0.75, 2.80],
 		[lock_width/2-0.55, lock_depth],
 		[lock_width/2+0.50, lock_depth],
@@ -46,8 +46,8 @@ module _girl_lock_part() {
 		polygon([
 			[           0,      0.00],
 			[lock_width/2,      0.00],
-			[lock_width/2,      2.00],
-			[lock_width/2-0.95, 2.00],
+			[lock_width/2,      lock_shoulder],
+			[lock_width/2-0.95, lock_shoulder],
 			[lock_width/2-0.60, lock_depth+0.1],
 			[lock_width/2,      lock_depth+0.1],
 			[lock_width/2-0.30, 6.20],

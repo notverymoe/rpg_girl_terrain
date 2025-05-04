@@ -1,7 +1,16 @@
 # /bin/sh
 
+ROOT_DIR="$(pwd)"
+pushd .
+
 rm -rf out/
-mkdir out
-cd src/
-for i in *.scad; do openscad -o "../out/${i%.*}.stl" "$i"; done
-cd ../
+
+mkdir -p out/base/
+pushd src/sample/base
+for i in *.scad; do openscad -o "$ROOT_DIR/out/base/${i%.*}.stl" "$i"; done;
+popd
+
+mkdir -p out/scifi/
+pushd src/sample/scifi/
+for i in *.scad; do openscad -o "$ROOT_DIR/out/scifi/${i%.*}.stl" "$i"; done;
+popd

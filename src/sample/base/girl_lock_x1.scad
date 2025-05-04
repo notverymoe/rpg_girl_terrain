@@ -1,5 +1,5 @@
 // Copyright 2025 Natalie Baker // Apache v2 //
 
-use<girl/girl_base.scad>;
+use<../../girl/girl_lock.scad>;
 
-girl_base();
+girl_lock(false);
