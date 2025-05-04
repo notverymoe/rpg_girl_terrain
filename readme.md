@@ -7,6 +7,8 @@ terrain system written in OpenScad.
 testing is ongoing. I would reccomend against printing out
 100 pieces as this is not considered stable yet.
 
+![Girl Terrain Tile](/media/tile_offset.jpg "Girl Terrain Tile")
+
 ## About
 
 This is designed as a 32mm scale system, with enough room
@@ -75,6 +77,9 @@ So far it has only been tested with ABS, but I expect PLA should function well.
 
 ![Locking Mechanism - Lock](/media/lock.png "Locking Mechanism - Lock")
 ![Locking Mechanism - Slot](/media/slot.png "Locking Mechanism - Slot")
+
+Additionally as is common, the positions of the slots are space by half a tile exactly. Making it possible to place a tile inbetween two others to create an offsets.
+![Girl Terrain build an with offset tile attached](/media/tile_offset.jpg "Girl Terrain Tile with an offset")
 
 ## Magnet Selection
 
