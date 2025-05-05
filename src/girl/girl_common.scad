@@ -14,11 +14,20 @@ lock_width    = 11;
 grid_size   = base_size + 2*wall_width;
 grid_diag   = sqrt(2*grid_size*grid_size);
 grid_height = max(lock_height, magnet_height)+1.2;
+grid_key_width = 1.6;
 
-frame_size = 2.4;
+tile_height        = grid_height+(grid_height-magnet_height)/2;
+tile_top_thickness = tile_height-magnet_height;
+
+frame_size = 3.0;
 
 module mirror_copy(m) {
 	mirror(m) children();
+	children();	
+}
+
+module rotate_copy(a) {
+	rotate(a) children();
 	children();	
 }
 

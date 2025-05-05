@@ -9,7 +9,7 @@ girl_lock();
 //girl_slot();
 
 module girl_lock(center=true) {
-	$fn=12;
+	$fn=24;
 	linear_extrude(lock_height, center=center, convexity=2)
 	mirror_copy([0,1])
 	mirror_copy([1,0])
@@ -17,7 +17,7 @@ module girl_lock(center=true) {
 }
 
 module girl_slot(center=true) {
-	$fn=12;
+	$fn=24;
 	linear_extrude(lock_height+0.4, center=center, convexity=2)
 	mirror_copy([0,1])
 	mirror_copy([1,0])

@@ -2,15 +2,14 @@
 include<../../girl/girl_common.scad>;
 use<../../girl/girl_tile.scad>;
 
-$fn=16;
-	
-color("red")
-girl_tile();
+union() {
+	girl_tile();
 
-scifi_tile_top(grid_size);
+	translate([0,0,tile_height-0.01])
+	scifi_tile_top(grid_size);
+}
 
 module scifi_tile_top(size) {
-	
 	w = is_num(size) ? size : size[0];
 	h = is_num(size) ? size : size[1];
 
@@ -26,15 +25,20 @@ module scifi_tile_top(size) {
 		}
 	}
 
-	resize([w,h,1.5])
-	minkowski() {	
-		linear_extrude(1)
-		offset(-0.5)
-		scifi_grate_frame([w,h], 2.5);
+	intersection() {
+		resize([w+0.2,h+0.2,1.5])
+		minkowski() {	
+			linear_extrude(1)
+			offset(-0.5)
+				scifi_grate_frame([w,h], 2.5);
+			
+			rotate([45,45,45])
+				cube(0.5, center=true);
+		}
 		
-		rotate([45,45,45]) cube(0.5, center=true);
+		linear_extrude(1.5)
+			square([w,h],center=true);
 	}
-
 }
 
 module scifi_grate_frame(size, thickness) {
