@@ -96,14 +96,20 @@ module _girl_grid_slots(a) {
 
 module _girl_grid_single() {
 	difference() {
-		linear_extrude(grid_height)
-		intersection() {
-			square(grid_size, center=true);
-			repeat([grid_size/2,grid_size/2,1], 2, 2, 1, true)
-				_girl_grid_lattice(grid_size/2, frame_size, 4.5);
+		
+		union() {
+			linear_extrude(grid_height)
+			intersection() {
+				square(grid_size, center=true);
+				repeat([grid_size/2,grid_size/2,1], 2, 2, 1, true)
+					_girl_grid_lattice(grid_size/2, frame_size, 3.5);
+			}
+			
 		}
+		
+		
 		_girl_grid_magnet_hole();
-		_girl_grid_key(grid_key_width, 0.2);
+		_girl_grid_key(grid_key_width, 0.3, 0.5);
 	}
 
 	translate([0,0,grid_height])
@@ -133,18 +139,20 @@ module _girl_grid_lattice(size, wall, radius) {
 	}
 }
 
-module _girl_grid_key(wall, tolerance=0) {
+module _girl_grid_key(wall, tolerance=0, profile_tolerance=-1) {
 	rotate_copy(90)
 	mirror_copy([1,0])
 	translate([grid_size/4,0,0])
-		_girl_grid_key_single(wall, tolerance);
+		_girl_grid_key_single(wall, tolerance, profile_tolerance);
 }
 
-module _girl_grid_key_single(wall, tolerance=0) {
+module _girl_grid_key_single(wall, tolerance=0, profile_tolerance=-1) {
+	profile_tolerance = profile_tolerance < 0 ? tolerance : profile_tolerance;
+	
 	rotate([90,0,0])
 	translate([0,0,-wall/2-tolerance])
 	linear_extrude(wall+2*tolerance)
-	offset(tolerance)
+	offset(profile_tolerance)
 	polygon([
 		[ 0.00,-0.25],
 		[ 3.00,-0.25],

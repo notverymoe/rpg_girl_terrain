@@ -16,10 +16,10 @@ grid_diag   = sqrt(2*grid_size*grid_size);
 grid_height = max(lock_height, magnet_height)+1.2;
 grid_key_width = 1.6;
 
-tile_height        = grid_height+(grid_height-magnet_height)/2;
+tile_height        = grid_height;
 tile_top_thickness = tile_height-magnet_height;
 
-frame_size = 3.0;
+frame_size = lock_depth;
 
 module mirror_copy(m) {
 	mirror(m) children();

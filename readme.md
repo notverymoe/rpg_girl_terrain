@@ -97,6 +97,13 @@ can also accept a magnet should you be playing in an environment
 where your game table is often knocked. It might not work with the
 tiles's magnet depending on the thickness of the tile's surface.
 
+# SciFI tileset
+
+Currently there's a WIP sci-fi themed tileset included. We'd love to
+make more as this stabilizes.
+
+![SciFi Tileset Preview](/media/scifi_wip.png "A scifi tileset with grates and pipes in the wall")
+
 ## Future Goals 
 - Better documentation & code cleanliness
 - Small library of basic scifi and fantasy tiles
