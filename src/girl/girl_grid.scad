@@ -96,20 +96,21 @@ module _girl_grid_slots(a) {
 
 module _girl_grid_single() {
 	difference() {
-		
-		union() {
-			linear_extrude(grid_height)
-			intersection() {
-				square(grid_size, center=true);
-				repeat([grid_size/2,grid_size/2,1], 2, 2, 1, true)
-					_girl_grid_lattice(grid_size/2, frame_size, 3.5);
-			}
+		linear_extrude(grid_height) {
+			
+			repeat([grid_size, grid_size,1], 2, 2, 1, true) 
+				_girl_grid_lattice(grid_size, frame_size, lock_depth/2);
+			
+			rotate_copy(90)
+			mirror_copy([1,0])
+			translate([grid_size/4, 0])
+			resize([grid_size/4, lock_depth+1.5*grid_key_width]) 
+			circle(r=grid_size, $fn=32);
 			
 		}
 		
-		
 		_girl_grid_magnet_hole();
-		_girl_grid_key(grid_key_width, 0.3, 0.5);
+		_girl_grid_key(grid_key_width, 0.4, 0.8);
 	}
 
 	translate([0,0,grid_height])

@@ -11,6 +11,7 @@ module girl_tile(size = 1) {
 
 	x = is_num(size) ? size : size[0];
 	y = is_num(size) ? size : size[1];
+	grid_key_width_tol = 0.4;
 
 	difference() {
 		union() {
@@ -24,8 +25,8 @@ module girl_tile(size = 1) {
 				repeat([grid_size/2, grid_size/2, 1], 2, 2, 1, true)
 					_girl_grid_lattice(
 						grid_size/2,
-						max(grid_key_width+1.2, frame_size/3*2),
-						3.5
+						max(grid_key_width+grid_key_width_tol+1.2, frame_size/4*3),
+						lock_depth/4*3
 					);
 		}
 
@@ -36,7 +37,7 @@ module girl_tile(size = 1) {
 		}
 		
 		repeat([grid_size, grid_size, 1], x, y, 1, true) {
-			_girl_grid_key(grid_key_width, 0.25, 0.5);
+			_girl_grid_key(grid_key_width, grid_key_width_tol, 0.8);
 		}
 	}
 
