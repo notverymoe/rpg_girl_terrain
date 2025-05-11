@@ -2,4 +2,4 @@
 
 use<../../girl/girl_grid.scad>;
 
-grid_grid_map([[1]]);
+grid_grid_map([[1]], 0.0);

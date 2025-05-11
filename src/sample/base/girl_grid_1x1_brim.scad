@@ -2,8 +2,4 @@
 
 use<../../girl/girl_grid.scad>;
 
-grid_grid_map([
-    [1,1,1],
-    [1,1,1],
-    [1,1,1],
-], 0.0);
+grid_grid_map([[1]], 0.2);

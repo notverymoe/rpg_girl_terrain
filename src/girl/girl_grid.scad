@@ -5,7 +5,9 @@ use<girl_lock.scad>;
 
 grid_grid_map([[1,1,1],[1,1,1],[1,1,1]]);
 
-module grid_grid_map(m) {
+module grid_grid_map(m, brim=0.2) {
+	
+	// TODO interior corners
 
 	for(y = [0:len(m)-1]) {
 		for(x = [0:len(m[y])-1]) {
@@ -15,39 +17,42 @@ module grid_grid_map(m) {
 					m[y][x+1] != 1,
 					m[y+1][x] != 1,
 					m[y][x-1] != 1,
-					m[y-1][x] != 1
+					m[y-1][x] != 1,
+					brim
 				);
 			}
 		}
 	}
 	
-	for(y = [1:len(m)-1]) {
-		for(x = [1:len(m[y])-1]) {
-			
-			solid_pxpy = m[y  ][x  ] == 1;
-			solid_pxny = m[y-1][x  ] == 1;
-			solid_nxpy = m[y  ][x-1] == 1;
-			solid_nxny = m[y-1][x-1] == 1;
-			
-			if ((solid_pxpy && solid_nxny) && (!solid_pxny && !solid_nxpy)) {
-				translate([(x-0.5)*grid_size, (y-0.5)*grid_size])
-				rotate([0,0,-45])
-				linear_extrude(grid_height)
-				square([frame_size*2, lock_depth*2], center=true);
-			}
-			
-			if ((!solid_pxpy && !solid_nxny) && (solid_pxny && solid_nxpy)) {
-				translate([(x-0.5)*grid_size, (y-0.5)*grid_size])
-				rotate([0,0,45])
-				linear_extrude(grid_height)
-				square([frame_size*2, lock_depth*2], center=true);
+	if (len(m) > 1 && len(m[y]) > 1) {
+		for(y = [1:len(m)-1]) {
+			for(x = [1:len(m[y])-1]) {
+				
+				solid_pxpy = m[y  ][x  ] == 1;
+				solid_pxny = m[y-1][x  ] == 1;
+				solid_nxpy = m[y  ][x-1] == 1;
+				solid_nxny = m[y-1][x-1] == 1;
+				
+				if ((solid_pxpy && solid_nxny) && (!solid_pxny && !solid_nxpy)) {
+					translate([(x-0.5)*grid_size, (y-0.5)*grid_size])
+					rotate([0,0,-45])
+					linear_extrude(grid_height)
+					square([frame_size*2, lock_depth*2], center=true);
+				}
+				
+				if ((!solid_pxpy && !solid_nxny) && (solid_pxny && solid_nxpy)) {
+					translate([(x-0.5)*grid_size, (y-0.5)*grid_size])
+					rotate([0,0,45])
+					linear_extrude(grid_height)
+					square([frame_size*2, lock_depth*2], center=true);
+				}
 			}
 		}
 	}
 	
 }
 
-module girl_grid_section(x_p, y_p, x_n, y_n) {
+module girl_grid_section(x_p, y_p, x_n, y_n, brim) {
 	$fn=24;
 	intersection() {
 		union() {
@@ -75,6 +80,45 @@ module girl_grid_section(x_p, y_p, x_n, y_n) {
 		translate([x1, y1])
 		square([x2-x1,y2-y1]);
 	}
+	
+	if (brim > 0) {
+		if (x_p && y_p)
+			translate([grid_size/2,grid_size/2])
+			_girl_grid_brim_ear_corner(brim);
+		
+		if (x_n && y_p)
+			translate([-grid_size/2,grid_size/2])
+			rotate(90)
+			_girl_grid_brim_ear_corner(brim);
+		
+		if (x_n && y_n)
+			translate([-grid_size/2,-grid_size/2])
+			rotate(180)
+			_girl_grid_brim_ear_corner(brim);
+		
+		if (x_p && y_n)
+			translate([grid_size/2,-grid_size/2])
+			rotate(270)
+			_girl_grid_brim_ear_corner(brim);
+	}
+}
+
+module _girl_grid_brim_ear_corner(h, d = 16) {
+	linear_extrude(h)
+	difference() {
+		union() {
+			circle(d=d);
+			polygon([
+				[      0, -d*0.75+0.1],
+				[   0.75, -d*0.75],
+				[    d/2,       0],
+				[      0,     d/2],
+				[-d*0.75,    0.75],
+				[-d*0.75+0.1,   0],
+			]);
+		}
+		translate([-d/2-1,-d/2-1]) square(d/2);
+	}
 }
 
 module _girl_grid_slots_bar(a) {
@@ -99,7 +143,7 @@ module _girl_grid_single() {
 		linear_extrude(grid_height) {
 			
 			repeat([grid_size, grid_size,1], 2, 2, 1, true) 
-				_girl_grid_lattice(grid_size, frame_size, lock_depth/2);
+				_girl_grid_lattice(grid_size, frame_size, magnet_dia/3*2);
 			
 			rotate_copy(90)
 			mirror_copy([1,0])

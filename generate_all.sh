@@ -1,16 +1,18 @@
 # /bin/sh
 
 ROOT_DIR="$(pwd)"
-pushd .
 
 rm -rf out/
 
-mkdir -p out/base/
-pushd src/sample/base
-for i in *.scad; do openscad -o "$ROOT_DIR/out/base/${i%.*}.stl" "$i"; done;
-popd
+cd src/sample/
 
-mkdir -p out/scifi/
-pushd src/sample/scifi/
-for i in *.scad; do openscad -o "$ROOT_DIR/out/scifi/${i%.*}.stl" "$i"; done;
-popd
+for d in */; do 
+    echo "Processing '${d%/}'";
+    mkdir -p ../../out/${d};
+    cd ${d};
+    for i in *.scad; do 
+        openscad -q "$i" -o "$ROOT_DIR/out/${d%/}/${i%.*}.stl" > /dev/null;
+        echo " - Proccessed ${d}${i%.*}";
+    done;
+    cd ../;
+done;

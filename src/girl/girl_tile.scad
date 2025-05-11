@@ -26,7 +26,7 @@ module girl_tile(size = 1) {
 					_girl_grid_lattice(
 						grid_size/2,
 						max(grid_key_width+grid_key_width_tol+1.2, frame_size/4*3),
-						lock_depth/4*3
+						magnet_dia/3*2
 					);
 		}
 
