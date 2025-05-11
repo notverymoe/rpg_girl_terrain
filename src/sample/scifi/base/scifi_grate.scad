@@ -4,9 +4,9 @@ use<../../../girl/girl_tile.scad>;
 
 //scifi_tile_full();
 //scifi_tile_wall_side();
-//scifi_tile_wall_hallway();
+scifi_tile_wall_hallway();
 //scifi_tile_wall_corner();
-scifi_tile_wall_deadend();
+//scifi_tile_wall_deadend();
 
 
 module scifi_tile_full() {
@@ -22,13 +22,9 @@ module scifi_tile_wall_side() {
 	translate([wall_width/2,0,tile_height-0.01])
 	scifi_tile_top([grid_size-wall_width,grid_size]);
 	
-	translate([-grid_size/2,grid_size/2,tile_height+1-0.01]) {
+	translate([-grid_size/2,grid_size/2,tile_height-0.01]) {
 		rotate([90,0,0]) {
 			scifi_tile_wall([grid_size, grid_size/3, wall_width]);
-			
-			translate([0,-1,0])
-			linear_extrude(grid_size)
-			square([wall_width,1]);
 		}
 	}
 }
@@ -40,13 +36,9 @@ module scifi_tile_wall_hallway() {
 	scifi_tile_top([grid_size-wall_width*2,grid_size]);
 	
 	mirror_copy([1,0])
-	translate([-grid_size/2,grid_size/2,tile_height+1-0.01]) {
+	translate([-grid_size/2,grid_size/2,tile_height-0.01]) {
 		rotate([90,0,0]) {
 			scifi_tile_wall([grid_size, grid_size/3, wall_width]);
-			
-			translate([0,-1,0])
-			linear_extrude(grid_size)
-			square([wall_width,1]);
 		}
 	}
 }
@@ -58,13 +50,9 @@ module scifi_tile_wall_corner() {
 	scifi_tile_top([grid_size-wall_width,grid_size-wall_width]);
 	
 	mirror_copy([1,1])
-	translate([-grid_size/2,grid_size/2-wall_width,tile_height+1-0.01]) {
+	translate([-grid_size/2,grid_size/2-wall_width,tile_height-0.01]) {
 		rotate([90,0,0]) {
 			scifi_tile_wall([grid_size-wall_width, grid_size/3, wall_width]);
-			
-			translate([0,-1,0])
-			linear_extrude(grid_size-wall_width)
-			square([wall_width,1]);
 		}
 	}
 	
@@ -80,24 +68,16 @@ module scifi_tile_wall_deadend() {
 	scifi_tile_top([grid_size-wall_width*2,grid_size-wall_width]);
 	
 	mirror_copy([1,0])
-	translate([-grid_size/2,grid_size/2-wall_width,tile_height+1-0.01]) {
+	translate([-grid_size/2,grid_size/2-wall_width,tile_height-0.01]) {
 		rotate([90,0,0]) {
 			scifi_tile_wall([grid_size-wall_width, grid_size/3, wall_width]);
-			
-			translate([0,-1,0])
-			linear_extrude(grid_size-wall_width)
-			square([wall_width,1]);
 		}
 	}
 	
 	mirror([1,1])
-	translate([-grid_size/2,grid_size/2-wall_width,tile_height+1-0.01]) {
+	translate([-grid_size/2,grid_size/2-wall_width,tile_height-0.01]) {
 		rotate([90,0,0]) {
 			scifi_tile_wall([grid_size-wall_width*2, grid_size/3, wall_width]);
-			
-			translate([0,-1,0])
-			linear_extrude(grid_size-wall_width)
-			square([wall_width,1]);
 		}
 	}
 	
