@@ -1,21 +1,28 @@
 # /bin/sh
 
-ROOT_DIR="$(pwd)"
+if [ $# -eq 0 ]
+then
+    ROOT_DIR="$(pwd)"
+    rm -rf out/
+    cd src/sample/
 
-rm -rf out/
+    for d in */
+    do 
+        echo "Processing '${d%/}'";
+        mkdir -p ../../out/${d};
+        cd ${d};
 
-cd src/sample/
+        ls -w1 *.scad | xargs -n1 --max-procs=4 sh ../../../generate_all.sh $ROOT_DIR $d;
 
-for d in */; do 
-    echo "Processing '${d%/}'";
-    mkdir -p ../../out/${d};
-    cd ${d};
-    for i in *.scad; do 
+        cd ../;
+    done
 
-        if [[ $i != _* ]]; then
-            openscad -q "$i" -o "$ROOT_DIR/out/${d%/}/${i%.*}.stl";
-            echo " - Proccessed ${d}${i%.*}";
-        fi;
-    done;
-    cd ../;
-done;
+else
+
+    if [[ $3 != _* ]]
+    then
+        openscad -q "$3" -o "$1/out/${2%/}/${3%.*}.stl";
+        echo " - Proccessed ${2}${3%.*}";
+    fi
+
+fi
