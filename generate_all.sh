@@ -3,8 +3,14 @@
 if [ $# -eq 0 ]
 then
     ROOT_DIR="$(pwd)"
+    CORES="$(nproc)"
+    CORES="$(( CORES/4 ))"
+    CORES="$(( CORES < 1 ? 1 : CORES ))"
+
     rm -rf out/
     cd src/sample/
+
+    echo $CORES
 
     for d in */
     do 
@@ -12,7 +18,7 @@ then
         mkdir -p ../../out/${d};
         cd ${d};
 
-        ls -w1 *.scad | xargs -n1 --max-procs=4 sh ../../../generate_all.sh $ROOT_DIR $d;
+        ls -w1 *.scad | xargs -n1 --max-procs=$CORES sh ../../../generate_all.sh $ROOT_DIR $d;
 
         cd ../;
     done
