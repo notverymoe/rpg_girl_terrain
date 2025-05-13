@@ -1,5 +1,23 @@
 // Copyright 2025 Natalie Baker // Apache v2 //
 
-use<base/scifi_grate.scad>;
+include<../../girl/girl_common.scad>;
+use<../../girl/girl_tile.scad>;
+
+use<_scifi_floor_grate_parts.scad>;
+use<_scifi_wall_pipes_parts.scad>;
 
 scifi_tile_wall_hallway();
+
+module scifi_tile_wall_hallway() {
+	girl_tile();
+
+	translate([0,0,tile_height-0.01])
+		_scifi_floor_grate([grid_size-wall_width*2,grid_size]);
+	
+	mirror_copy([1,0])
+	translate([-grid_size/2,grid_size/2,tile_height-0.01]) {
+		rotate([90,0,0]) {
+			_scifi_wall_pipes([grid_size, grid_size/3, wall_width]);
+		}
+	}
+}

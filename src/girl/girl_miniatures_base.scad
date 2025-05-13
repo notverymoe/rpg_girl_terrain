@@ -9,13 +9,13 @@ base_rad      = base_size/2;
 base_rad_top  = (base_size - 2)/2;
 base_rad_in   = base_rad_top+(base_rad-base_rad_top)*(base_gap/(base_thickness+base_gap));
  
-girl_base();
+girl_mini_base();
 
-module girl_base() {
+module girl_mini_base() {
 	$fn=24;
 	difference() {
 		union() {
-			_girl_base_part();
+			_girl_mini_base_part();
 			cylinder(d=magnet_dia+2*base_thickness, h=base_gap);
 			
 			for(i = [0:2])
@@ -24,11 +24,11 @@ module girl_base() {
 			square([base_size-1.45*base_thickness,base_thickness], center=true);
 		}
 		
-		_girl_base_magnet_hole();
+		_girl_mini_base_magnet_hole();
 	}
 }
 
-module _girl_base_part() {
+module _girl_mini_base_part() {
 	rotate_extrude($fn=6)
 	intersection() {
 		polygon([ 
@@ -43,7 +43,7 @@ module _girl_base_part() {
 	}
 }
 
-module _girl_base_magnet_hole(tolerance=0.15) {
+module _girl_mini_base_magnet_hole(tolerance=0.15) {
 	mad_d = magnet_dia+2*tolerance;
 	mag_h = magnet_height+2*tolerance;
 	

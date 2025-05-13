@@ -11,8 +11,11 @@ for d in */; do
     mkdir -p ../../out/${d};
     cd ${d};
     for i in *.scad; do 
-        openscad -q "$i" -o "$ROOT_DIR/out/${d%/}/${i%.*}.stl" > /dev/null;
-        echo " - Proccessed ${d}${i%.*}";
+
+        if [[ $i != _* ]]; then
+            openscad -q "$i" -o "$ROOT_DIR/out/${d%/}/${i%.*}.stl";
+            echo " - Proccessed ${d}${i%.*}";
+        fi;
     done;
     cd ../;
 done;

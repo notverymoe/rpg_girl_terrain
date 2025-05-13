@@ -3,9 +3,9 @@
 include<girl_common.scad>;
 use<girl_lock.scad>;
 
-grid_grid_map([[1,1,1],[1,1,1],[1,1,1]]);
+girl_baseplate_map([[1,1,1],[1,1,1],[1,1,1]]);
 
-module grid_grid_map(m, brim=0.2) {
+module girl_baseplate_map(m, brim=0.2) {
 	
 	// TODO interior corners
 
@@ -13,7 +13,7 @@ module grid_grid_map(m, brim=0.2) {
 		for(x = [0:len(m[y])-1]) {
 			translate([x*grid_size, y*grid_size])
 			if (m[y][x]) {
-				girl_grid_section(
+				girl_baseplate_single(
 					m[y][x+1] != 1,
 					m[y+1][x] != 1,
 					m[y][x-1] != 1,
@@ -52,21 +52,21 @@ module grid_grid_map(m, brim=0.2) {
 	
 }
 
-module girl_grid_section(x_p, y_p, x_n, y_n, brim) {
+module girl_baseplate_single(x_p, y_p, x_n, y_n, brim) {
 	$fn=24;
 	intersection() {
 		union() {
 			difference() {
-				_girl_grid_single();
-				if (x_p) _girl_grid_slots_bar(270);
-				if (x_n) _girl_grid_slots_bar(90);
-				if (y_p) _girl_grid_slots_bar(0);
-				if (y_n) _girl_grid_slots_bar(180);
+				_girl_baseplate_inner();
+				if (x_p) _girl_baseplate_edge(270);
+				if (x_n) _girl_baseplate_edge(90);
+				if (y_p) _girl_baseplate_edge(0);
+				if (y_n) _girl_baseplate_edge(180);
 			}
-			if (x_p) _girl_grid_slots(270);
-			if (x_n) _girl_grid_slots(90);
-			if (y_p) _girl_grid_slots(0);
-			if (y_n) _girl_grid_slots(180);
+			if (x_p) _girl_baseplate_edge_slots(270);
+			if (x_n) _girl_baseplate_edge_slots(90);
+			if (y_p) _girl_baseplate_edge_slots(0);
+			if (y_n) _girl_baseplate_edge_slots(180);
 		}
 		
 		x1 = x_n ? -grid_size/2 : -grid_size/2 - lock_depth/2;
@@ -84,26 +84,26 @@ module girl_grid_section(x_p, y_p, x_n, y_n, brim) {
 	if (brim > 0) {
 		if (x_p && y_p)
 			translate([grid_size/2,grid_size/2])
-			_girl_grid_brim_ear_corner(brim);
+			_girl_baseplate_brim_ear(brim);
 		
 		if (x_n && y_p)
 			translate([-grid_size/2,grid_size/2])
 			rotate(90)
-			_girl_grid_brim_ear_corner(brim);
+			_girl_baseplate_brim_ear(brim);
 		
 		if (x_n && y_n)
 			translate([-grid_size/2,-grid_size/2])
 			rotate(180)
-			_girl_grid_brim_ear_corner(brim);
+			_girl_baseplate_brim_ear(brim);
 		
 		if (x_p && y_n)
 			translate([grid_size/2,-grid_size/2])
 			rotate(270)
-			_girl_grid_brim_ear_corner(brim);
+			_girl_baseplate_brim_ear(brim);
 	}
 }
 
-module _girl_grid_brim_ear_corner(h, d = 16) {
+module _girl_baseplate_brim_ear(h, d = 16) {
 	linear_extrude(h)
 	difference() {
 		union() {
@@ -121,7 +121,7 @@ module _girl_grid_brim_ear_corner(h, d = 16) {
 	}
 }
 
-module _girl_grid_slots_bar(a) {
+module _girl_baseplate_edge(a) {
 	rotate(a)
 	translate([0,grid_size/2,0])
 	difference() {
@@ -131,19 +131,19 @@ module _girl_grid_slots_bar(a) {
 	}
 }
 
-module _girl_grid_slots(a) {
-	_girl_grid_slots_bar(a) {
+module _girl_baseplate_edge_slots(a) {
+	_girl_baseplate_edge(a) {
 		translate([-grid_size/4,0, grid_height/2]) girl_slot();
 		translate([ grid_size/4,0, grid_height/2]) girl_slot();
 	}
 }
 
-module _girl_grid_single() {
+module _girl_baseplate_inner() {
 	difference() {
 		linear_extrude(grid_height) {
 			
 			repeat([grid_size, grid_size,1], 2, 2, 1, true) 
-				_girl_grid_lattice(grid_size, frame_size, magnet_dia/3*2);
+				_girl_baseplate_lattice(grid_size, frame_size, magnet_dia/3*2);
 			
 			rotate_copy(90)
 			mirror_copy([1,0])
@@ -153,15 +153,15 @@ module _girl_grid_single() {
 			
 		}
 		
-		_girl_grid_magnet_hole();
-		_girl_grid_key(grid_key_width, 0.4, 0.8);
+		_girl_baseplate_magnet_slot();
+		_girl_baseplate_tile_key(grid_key_width, 0.4, 0.8);
 	}
 
 	translate([0,0,grid_height])
-		_girl_grid_key(grid_key_width);
+		_girl_baseplate_tile_key(grid_key_width);
 }
 
-module _girl_grid_magnet_hole(tolerance=0.15) {
+module _girl_baseplate_magnet_slot(tolerance=0.15) {
 	mad_d = magnet_dia+2*tolerance;
 	mag_h = magnet_height+2*tolerance;
 	
@@ -172,7 +172,7 @@ module _girl_grid_magnet_hole(tolerance=0.15) {
 		cylinder(d=mad_d, h=mag_h);
 }
 
-module _girl_grid_lattice(size, wall, radius) {
+module _girl_baseplate_lattice(size, wall, radius) {
 	intersection() {
 		offset(-radius)
 		offset( radius)
@@ -184,14 +184,14 @@ module _girl_grid_lattice(size, wall, radius) {
 	}
 }
 
-module _girl_grid_key(wall, tolerance=0, profile_tolerance=-1) {
+module _girl_baseplate_tile_key(wall, tolerance=0, profile_tolerance=-1) {
 	rotate_copy(90)
 	mirror_copy([1,0])
 	translate([grid_size/4,0,0])
-		_girl_grid_key_single(wall, tolerance, profile_tolerance);
+		_girl_baseplate_tile_key_single(wall, tolerance, profile_tolerance);
 }
 
-module _girl_grid_key_single(wall, tolerance=0, profile_tolerance=-1) {
+module _girl_baseplate_tile_key_single(wall, tolerance=0, profile_tolerance=-1) {
 	profile_tolerance = profile_tolerance < 0 ? tolerance : profile_tolerance;
 	
 	rotate([90,0,0])

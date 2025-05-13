@@ -1,7 +1,7 @@
 // Copyright 2025 Natalie Baker // Apache v2 //
 
 include<girl_common.scad>;
-use<girl_grid.scad>;
+use<girl_baseplate.scad>;
 
 girl_tile(1);
 
@@ -23,7 +23,7 @@ module girl_tile(size = 1) {
 			linear_extrude(tile_height, convexity=2) 
 			repeat([grid_size, grid_size, 1], x, y, 1, true) 
 				repeat([grid_size/2, grid_size/2, 1], 2, 2, 1, true)
-					_girl_grid_lattice(
+					_girl_baseplate_lattice(
 						grid_size/2,
 						max(grid_key_width+grid_key_width_tol+1.2, frame_size/4*3),
 						magnet_dia/3*2
@@ -37,7 +37,7 @@ module girl_tile(size = 1) {
 		}
 		
 		repeat([grid_size, grid_size, 1], x, y, 1, true) {
-			_girl_grid_key(grid_key_width, grid_key_width_tol, 0.8);
+			_girl_baseplate_tile_key(grid_key_width, grid_key_width_tol, 0.8);
 		}
 	}
 
