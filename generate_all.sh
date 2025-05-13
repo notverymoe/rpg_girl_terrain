@@ -2,15 +2,15 @@
 
 if [ $# -eq 0 ]
 then
-    ROOT_DIR="$(pwd)"
-    CORES="$(nproc)"
-    CORES="$(( CORES/4 ))"
-    CORES="$(( CORES < 1 ? 1 : CORES ))"
+    ROOT_DIR="$(pwd)";
+    CORES="$(nproc)";
+    CORES="$(( CORES/4 ))";
+    CORES="$(( CORES < 1 ? 1 : CORES ))";
 
-    rm -rf out/
-    cd src/sample/
+    rm -rf out/;
+    cd src/sample/;
 
-    echo $CORES
+    echo "Running with ${CORES} threads";
 
     for d in */
     do 

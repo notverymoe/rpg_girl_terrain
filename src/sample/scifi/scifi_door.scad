@@ -6,7 +6,7 @@ scifi_door();
 
 module scifi_door(
 	size = [
-		grid_size - wall_width - 0.4, 
+		grid_size - 2*wall_width - 0.4, 
 		50.0, 
 		wall_width/3
 	],
@@ -34,7 +34,7 @@ module _scifi_door_part(
 	]
 ) {
 	
-	passage_o = wall_width;
+	passage_o = wall_width/2;
 	passage_w = size[0] - 2*passage_o;
 	passage_h = size[1];
 	
