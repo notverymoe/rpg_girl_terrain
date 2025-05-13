@@ -34,27 +34,27 @@ module _scifi_wall_corner_door(size = [grid_size/3, wall_width], door_thickness 
 	d = size[1];	
 	
 	difference() {
-		cube([d,d*2,h]);
+		cube([d*2,d,h]);
 		
-		translate([0,d,0]) {
-			translate([(d-door_thickness)/2,0,-0.05])
-				cube([door_thickness, d+1, h+0.1]);
+		translate([d,0,0]) {
+			translate([0,(d-door_thickness)/2,-0.05])
+				cube([d+1, door_thickness, h+0.1]);
 			
-			translate([-0.1,d/4,-0.05])
-				cube([1.1, d/2, h+0.1]);
+			translate([d/4,-0.1,-0.05])
+				cube([d/2, 1.1, h+0.1]);
 			
-			translate([d-1,d/4,-0.05])
-				cube([1.1, d/2, h+0.1]);
+			translate([d/4,d-1,-0.05])
+				cube([d/2, 1.1, h+0.1]);
 		}
 		
 	}
 	
-	translate([1,d+ceil(d/2)/2,0])
-	repeat([1,1,1], 1, ceil(d/2), 1) 
+	translate([d+ceil(d/2)/2,1,0])
+	repeat([1,1,1], ceil(d/2), 1, 1) 
 		cylinder(d=1,h=h,$fn=16);
 	
-	translate([d-1,d+ceil(d/2)/2,0])
-	repeat([1,1,1], 1, ceil(d/2), 1) 
+	translate([d+ceil(d/2)/2,d-1,0])
+	repeat([1,1,1], ceil(d/2), 1, 1) 
 		cylinder(d=1,h=h,$fn=16);
 }
 

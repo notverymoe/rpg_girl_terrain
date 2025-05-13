@@ -9,8 +9,8 @@ girl_tile();
 
 translate([-grid_size/2,-grid_size/2,tile_height-0.01])
 _scifi_grate_gen(
-	3, 3, 4, 
-	1,    2, 
-	4, 2, 2,
-	[1,1,1,1]
+	3, 0, 0, 
+	3,    1, 
+	3, 0, 0,
+	[1,0,1,0]
 );

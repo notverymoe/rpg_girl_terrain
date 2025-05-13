@@ -3,14 +3,14 @@
 include<../../girl/girl_common.scad>;
 use<../../girl/girl_tile.scad>;
 
-use<_scifi_floor_grate_parts.scad>;
-use<_scifi_wall_pipes_parts.scad>;
+use<_scifi_grate_gen.scad>;
 
-scifi_grate_full();
+girl_tile();
 
-module scifi_grate_full() {
-	girl_tile();
-
-	translate([0,0,tile_height-0.01])
-	    _scifi_floor_grate(grid_size);
-}
+translate([-grid_size/2,-grid_size/2,tile_height-0.01])
+_scifi_grate_gen(
+	0, 0, 0, 
+	0,    0, 
+	0, 0, 0,
+	[0,0,0,0]
+);

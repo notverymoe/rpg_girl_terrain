@@ -3,7 +3,7 @@
 include<../../girl/girl_common.scad>;
 use<../../girl/girl_tile.scad>;
 
-module _scifi_floor_grate(size = grid_size) {
+module _scifi_floor_grate(size = grid_size, frame_w = 2.5) {
 
 	w = is_num(size) ? size : size[0];
 	h = is_num(size) ? size : size[1];
@@ -11,7 +11,7 @@ module _scifi_floor_grate(size = grid_size) {
 	_scifi_floor_grate_sheet([w,h], 0.5);
 
 	translate([0,0,0.5])
-		_scifi_floor_grate_frame([w,h], 2.5);
+		_scifi_floor_grate_frame([w,h], frame_w);
 }
 
 module _scifi_floor_grate_sheet(size = grid_size, thickness = 0.5) {
@@ -35,6 +35,7 @@ module _scifi_floor_grate_frame(size = grid_size, thickness = 2.5) {
 	w = is_num(size) ? size : size[0];
 	h = is_num(size) ? size : size[1];
 
+	// TODO height control
 	intersection() {
 		resize([w+0.2,h+0.2,0.75])
 		minkowski() {	

@@ -3,34 +3,14 @@
 include<../../girl/girl_common.scad>;
 use<../../girl/girl_tile.scad>;
 
-use<_scifi_floor_grate_parts.scad>;
-use<_scifi_wall_pipes_parts.scad>;
+use<_scifi_grate_gen.scad>;
 
-scifi_grate_deadend_lre();
+girl_tile();
 
-module scifi_grate_deadend_lre() {
-	girl_tile();
-
-	translate([0,-wall_width/2,tile_height-0.01])
-		_scifi_floor_grate([grid_size-wall_width*2,grid_size-wall_width]);
-	
-	mirror_copy([1,0])
-	translate([-(grid_size-wall_width)/2,0,tile_height-0.01])
-		_scifi_floor_grate([wall_width,grid_size-2*wall_width]);
-	
-	mirror_copy([1,0])
-	rotate(90)
-	mirror_copy([1,0])
-	translate([-grid_size/2, grid_size/2, tile_height+0.01])
-		rotate(270)
-		_scifi_wall_corner_door([grid_size/3, wall_width]);
-
-	mirror([1,1])
-	translate([-(grid_size-wall_width)/2,0,tile_height-0.01])
-		_scifi_floor_grate([wall_width,grid_size-2*wall_width]);
-	
-	mirror_copy([1,0])
-	translate([-grid_size/2, grid_size/2, tile_height+0.01])
-		rotate(270)
-		_scifi_wall_corner_door([grid_size/3, wall_width]);
-}
+translate([-grid_size/2,-grid_size/2,tile_height-0.01])
+_scifi_grate_gen(
+	3, 3, 3, 
+	3,    3, 
+	3, 0, 3,
+	[1,0,1,1]
+);
