@@ -6,9 +6,9 @@ use<../../girl/girl_tile.scad>;
 use<_scifi_floor_grate_parts.scad>;
 use<_scifi_wall_pipes_parts.scad>;
 
-scifi_tile_wall_side();
+scifi_grate_wall();
 
-module scifi_tile_wall_side() {
+module scifi_grate_wall() {
 	girl_tile();
 
 	translate([wall_width/2,0,tile_height-0.01])
