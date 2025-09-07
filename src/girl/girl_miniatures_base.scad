@@ -5,42 +5,33 @@ include<girl_common.scad>;
 base_thickness = 1.5;
 base_gap       = magnet_height;
 
-base_rad      = base_size/2;
-base_rad_top  = (base_size - 2)/2;
-base_rad_in   = base_rad_top+(base_rad-base_rad_top)*(base_gap/(base_thickness+base_gap));
+base_rad     = (base_size * 0.95)/2;
+base_rad_top = base_rad - 1.25;
+base_rad_in  = base_rad_top+(base_rad-base_rad_top)*(base_gap/(base_thickness+base_gap));
  
 girl_mini_base();
 
 module girl_mini_base() {
 	$fn=24;
 	difference() {
-		union() {
-			_girl_mini_base_part();
-			cylinder(d=magnet_dia+2*base_thickness, h=base_gap);
-			
-			for(i = [0:2])
-			rotate(60*i)
-			linear_extrude(base_gap)
-			square([base_size-1.45*base_thickness,base_thickness], center=true);
-		}
-		
+		_girl_mini_base_part();
 		_girl_mini_base_magnet_hole();
 	}
 }
 
 module _girl_mini_base_part() {
-	rotate_extrude($fn=6)
-	intersection() {
-		polygon([ 
-			[                  base_rad,                       0],
-			[              base_rad_top, base_thickness+base_gap],
-			[                        -1, base_thickness+base_gap],
-			[                        -1,                base_gap],
-			[base_rad_in-base_thickness,                base_gap],
-			[base_rad   -base_thickness,                       0],
-		]);
-		square([base_rad, base_thickness+base_gap]);
-	}
+	magnet_offset = (magnet_dia/2+base_thickness/2) / (sqrt(3)/2);
+	rotate_extrude($fn=8)
+	polygon([ 
+		[              base_rad,                          0],
+		[          base_rad_top,    base_thickness+base_gap],
+		[                     0,    base_thickness+base_gap],
+		[                     0,                          0],
+		[         magnet_offset,                          0],
+		[1.25*base_gap+magnet_offset,              base_gap],
+		[base_rad_in-base_thickness-base_gap*1.25, base_gap],
+		[base_rad   -base_thickness,                      0],
+	]);
 }
 
 module _girl_mini_base_magnet_hole(tolerance=0.15) {

@@ -7,7 +7,7 @@ use<_scifi_grate_gen.scad>;
 
 girl_tile();
 
-translate([-grid_size/2,-grid_size/2,tile_height-0.01])
+translate([-grid_tile_size/2,-grid_tile_size/2,tile_height-0.01])
 _scifi_grate_gen(
 	1, 1, 4, 
 	1,    2, 

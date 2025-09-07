@@ -5,7 +5,7 @@ use<../../girl/girl_tile.scad>;
 
 _scifi_wall_corner_door();
 
-module _scifi_wall_pipes(size = [grid_size, grid_size/3, wall_width], door_offset) {
+module _scifi_wall_pipes(size = [grid_tile_size, grid_tile_size/3, wall_width], door_offset) {
 	
 	w = size[0];
 	h = size[1];
@@ -28,7 +28,7 @@ module _scifi_wall_pipes(size = [grid_size, grid_size/3, wall_width], door_offse
 	}
 }
 
-module _scifi_wall_corner_door(size = [grid_size/3, wall_width], door_thickness = wall_width/3+0.4) {
+module _scifi_wall_corner_door(size = [grid_tile_size/3, wall_width], door_thickness = wall_width/3+0.4) {
 
 	h = size[0];
 	d = size[1];	
@@ -59,7 +59,7 @@ module _scifi_wall_corner_door(size = [grid_size/3, wall_width], door_thickness 
 		cylinder(d=1,h=h,$fn=16);
 }
 
-module _scifi_wall_corner_inner(size = [grid_size/3, wall_width]) {
+module _scifi_wall_corner_inner(size = [grid_tile_size/3, wall_width]) {
 	
 	h = size[0];
 	d = size[1];	
@@ -78,7 +78,7 @@ module _scifi_wall_corner_inner(size = [grid_size/3, wall_width]) {
 	
 }
 
-module _scifi_wall_corner_outer(size = [grid_size/3, wall_width]) {
+module _scifi_wall_corner_outer(size = [grid_tile_size/3, wall_width]) {
 
 	h = size[0];
 	d = size[1];	
