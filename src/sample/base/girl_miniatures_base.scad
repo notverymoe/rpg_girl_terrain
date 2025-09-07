@@ -2,4 +2,4 @@
 
 use<../../girl/girl_miniatures_base.scad>;
 
-girl_miniatures_base();
+girl_mini_base();

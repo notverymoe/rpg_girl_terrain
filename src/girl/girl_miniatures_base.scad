@@ -5,8 +5,8 @@ include<girl_common.scad>;
 base_thickness = 1.5;
 base_gap       = magnet_height;
 
-base_rad     = (base_size * 0.95)/2;
-base_rad_top = base_rad - 1.25;
+base_rad     = base_size/2;
+base_rad_top = base_rad - 1.5;
 base_rad_in  = base_rad_top+(base_rad-base_rad_top)*(base_gap/(base_thickness+base_gap));
  
 girl_mini_base();

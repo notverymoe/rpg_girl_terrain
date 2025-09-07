@@ -3,8 +3,9 @@
 // // Settings // //
 
 tile_tol   = 0.5; 
-base_size  = 35;
-wall_width = (50-(base_size+tile_tol))/2;
+base_size  = 32;
+base_scale = base_size + 2 - tile_tol;
+wall_width =   8;
 
 // // Magnets // //
 
@@ -16,13 +17,13 @@ magnet_height = 2.8;
 lock_height   = 1.9;
 lock_depth    = 4.9;
 lock_shoulder = 2.0;
-lock_width     = 11; 
+lock_width    = 11; 
 
 // // Grid // //
 
 grid_key_width = 1.8;
 
-grid_tile_size =  base_size + 2*wall_width;
+grid_tile_size =  base_scale + 2*wall_width;
 grid_tile_diag   = sqrt(2*grid_tile_size*grid_tile_size);
 
 grid_base_size   = grid_tile_size + tile_tol;
