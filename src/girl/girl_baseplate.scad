@@ -123,11 +123,14 @@ module _girl_baseplate_brim_ear(h, d = 16) {
 }
 
 module _girl_baseplate_edge(a) {
+	// [BF_COLLINEAR] HACK: Ideally this should be `lock_depth`, but if we make it exact we get degenerate faces
+	edge_thickness = lock_depth + 0.2;
+
 	rotate(a)
 	translate([0,grid_base_size/2,0])
 	difference() {
-		translate([-grid_base_size/2,-lock_depth,0])
-			cube([grid_base_size, lock_depth, grid_base_height]);
+		translate([-grid_base_size/2, -edge_thickness, 0])
+			cube([grid_base_size, edge_thickness, grid_base_height]);
 		children();
 	}
 }

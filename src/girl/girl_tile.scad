@@ -30,7 +30,9 @@ module girl_tile(size = 1) {
 						magnet_dia/3*2
 					);
 						
-					linear_extrude(tile_height-top_height, convexity=2)
+					// [BF_COLLINEAR] HACK: Ideally this should be `lock_depth`, but if we make it exact we get degenerate faces
+					translate([0,0,-0.01]) 
+					linear_extrude(tile_height-top_height-0.01, convexity=2)
 					_girl_baseplate_lattice(
 						grid_tile_size/2,
 						max(grid_key_width+grid_key_width_tol+1.2, frame_size/4*3),
