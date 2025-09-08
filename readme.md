@@ -52,7 +52,8 @@ The meshes generated will have some [degenerate faces](known_issues.md#BF_COLLIN
 far they haven't caused issues but you can cleanup the files
 using the `admesh` tool. Run `./scripts/fix_all.sh` to process
 each file with admesh and replace the file in-place with the
-fixed mesh.
+fixed mesh. Ensure that each model is actually fixed manually,
+as the tool can't fix all issues.
 
 ### Windows/MacOSX
 

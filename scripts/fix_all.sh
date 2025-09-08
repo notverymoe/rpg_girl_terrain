@@ -8,10 +8,14 @@ do
     cd ${d};
     for f in *.stl
     do
-        echo "Processing ${f}"
-        mv "${f}" "${f%.stl}.bak.stl"
-        admesh --write-ascii-stl="${f}" "${f%.stl}.bak.stl" 1> /dev/null
-        rm "${f%.stl}.bak.stl"
+        if [[ $f == *"."*"."* ]]; then
+            echo "Skipped ${f}"
+        else
+            echo "Processing ${f}"
+            rm -f "${f%.stl}.orig.stl"
+            mv "${f}" "${f%.stl}.orig.stl"
+            admesh --write-ascii-stl="${f%.stl}.fixed.stl" "${f%.stl}.orig.stl" 1> /dev/null
+        fi
     done
     cd ../;
 done
