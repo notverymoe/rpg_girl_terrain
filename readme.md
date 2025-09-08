@@ -36,15 +36,28 @@ https://www.tldrlegal.com/license/apache-license-2-0-apache-2-0
 
 # Building from Source
 
-On linux install OpenScad and run `./generate_all.sh`, all
-output files should be in the "out/" directory.
-
-Windows/MacOSX build scripts havent't been written, but you
-can open files under `src/sample/` in OpenScad and manually
-export them.
+You will need to install OpenScad.
 
 Eventually we will create releases containing all the basic
 files.
+
+### Linux
+
+Run `./scripts/generate_all.sh` to invoke openscad for each
+`src/sample` file, all files output will be written to `out/`
+under the subdirectory it was originally oranized by.
+
+The meshes generated will have some [degenerate faces](known_issues.md#BF_COLLINEAR), thus 
+far they haven't caused issues but you can cleanup the files
+using the `admesh` tool. Run `./scripts/fix_all.sh` to process
+each file with admesh and replace the file in-place with the
+fixed mesh.
+
+### Windows/MacOSX
+
+Build scripts havent't been written for this system, but you
+can open files under `src/sample/` in OpenScad and manually
+export them.
 
 # Usage
 

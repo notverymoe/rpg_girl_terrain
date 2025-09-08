@@ -1,4 +1,5 @@
-# /bin/sh
+# /bin/bash
+shopt -s nullglob dotglob
 
 if [ $# -eq 0 ]
 then
@@ -18,7 +19,7 @@ then
         mkdir -p ../../out/${d};
         cd ${d};
 
-        ls -w1 *.scad | xargs -n1 --max-procs=$CORES sh ../../../generate_all.sh $ROOT_DIR $d;
+        ls -w1 *.scad | xargs -n1 --max-procs=$CORES sh ../../../scripts/generate_all.sh $ROOT_DIR $d;
 
         cd ../;
     done
@@ -28,7 +29,7 @@ else
     if [[ $3 != _* ]]
     then
         openscad -q "$3" -o "$1/out/${2%/}/${3%.*}.stl";
-        echo " - Proccessed ${2}${3%.*}";
+        echo " - Processed ${2}${3%.*}";
     fi
 
 fi
