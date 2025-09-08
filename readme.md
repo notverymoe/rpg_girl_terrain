@@ -36,7 +36,8 @@ https://www.tldrlegal.com/license/apache-license-2-0-apache-2-0
 
 # Building from Source
 
-You will need to install OpenScad.
+You will need a snapshot version of OpenScad as this project
+makes use of some "experimental" features like `roof()`.
 
 Eventually we will create releases containing all the basic
 files.
