@@ -34,10 +34,13 @@ module _girl_mini_base_part() {
 	]);
 }
 
-module _girl_mini_base_magnet_hole(tolerance=0.15) {
-	mad_d = magnet_dia+2*tolerance;
-	mag_h = magnet_height+2*tolerance;
+module _girl_mini_base_magnet_hole() {
+	mad_d = magnet_dia;
+	mag_h = magnet_height;
 	
 	translate([0,0,-0.05])
 	cylinder(d=mad_d, h=mag_h+0.05);
+	
+	translate([0,0,(mag_h-0.05)/2])
+	cube([mad_d/2, base_rad, mag_h+0.05], center=true);
 }

@@ -143,6 +143,6 @@ So far it has only been tested with ABS, but I expect PLA should function well.
 ![Locking Mechanism - Lock](/media/lock.png "Locking Mechanism - Lock")
 ![Locking Mechanism - Slot](/media/slot.png "Locking Mechanism - Slot")
 
-Additionally as is common, the positions of the slots are space by half a tile exactly. Making it possible to place a tile inbetween two others to create an offsets.
+Additionally as is common, the positions of the slots are spaced by half a tile exactly. Making it possible to place a tile inbetween two others to create an offset.
 ![Girl Terrain build an with offset tile attached](/media/tile_offset.jpg "Girl Terrain Tile with an offset")
 

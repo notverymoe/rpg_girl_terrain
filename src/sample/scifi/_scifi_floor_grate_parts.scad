@@ -22,11 +22,11 @@ module _scifi_floor_grate_sheet(size = grid_tile_size, thickness = 0.5) {
 		difference() {
 			square([w,h], center=true);
 			
-			repeat([3,3,1], (w)/3, (h)/3, 1, center=true)
-				circle(d=1.5, $fn=6);
+			repeat([4,4,1], (w)/4, (h)/4, 1, center=true)
+				circle(d=2.5, $fn=6);
 			
-			repeat([3,3,1], (w)/3-1, (h)/3-1, 1, center=true)
-				circle(d=1.5, $fn=6);
+			repeat([4,4,1], (w)/4-1, (h)/4-1, 1, center=true)
+				circle(d=2.5, $fn=6);
 		}
 	}
 }

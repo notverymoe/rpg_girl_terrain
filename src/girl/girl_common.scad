@@ -2,15 +2,15 @@
 
 // // Settings // //
 
-tile_tol        =  0.4; // Spacing between tile toppers
-wall_width      =  8;   // The width of walls on a tile
-miniature_scale = 32;   // The miniature scale of the system
+tile_tol        =  0.25; // Spacing between tile toppers
+wall_width      =  8;    // The width of walls on a tile
+miniature_scale = 32;    // The miniature scale of the system
 miniature_scale_size = miniature_scale + 2 - tile_tol; // The flat space required for a miniature
 
 // // Magnets // //
 
 magnet_dia    = 6.2; // The magnet hole's diameter, including tolerances
-magnet_height = 2.8; // The magnet hole's depth/height, including tolerances
+magnet_height = 3.0; // The magnet hole's depth/height, including tolerances
 
 // // Lock // //
 
@@ -40,7 +40,8 @@ tile_height = max(         // The thickness of a tile
 	grid_base_height- 0.5, // We expect most floor textures to raise the surface by ~0.5mm
 	magnet_height   + 0.6  // We should ensure a thickness of at least 0.6mm above the magnet and in the pits
 );
-tile_top_thickness = tile_height-magnet_height; // The thickness of the tile above the magnet
+tile_base_thickness = magnet_height; 
+tile_top_thickness  = tile_height-tile_base_thickness; // The thickness of the tile above the magnet
 
 // // Frame // //
 

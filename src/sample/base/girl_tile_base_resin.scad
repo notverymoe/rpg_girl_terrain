@@ -2,4 +2,4 @@
 
 use<../../girl/girl_tile.scad>;
 
-girl_tile();
+girl_tile(solid = false);
