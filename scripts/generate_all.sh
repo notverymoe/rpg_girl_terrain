@@ -28,7 +28,7 @@ else
 
     if [[ $3 != _* ]]
     then
-        openscad --enable all -q "$3" -o "$1/out/${2%/}/${3%.*}.stl";
+        openscad --enable roof -q "$3" -o "$1/out/${2%/}/${3%.*}.stl";
         echo " - Processed ${2}${3%.*}";
     fi
 

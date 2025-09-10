@@ -14,7 +14,7 @@ do
             echo "Processing ${f}"
             rm -f "${f%.stl}.orig.stl"
             mv "${f}" "${f%.stl}.orig.stl"
-            admesh --write-ascii-stl="${f%.stl}.fixed.stl" "${f%.stl}.orig.stl" 1> /dev/null
+            admesh --exact --fill-holes --remove-unconnected --write-ascii-stl="${f%.stl}.fixed.stl" "${f%.stl}.orig.stl" 1> /dev/null
         fi
     done
     cd ../;
