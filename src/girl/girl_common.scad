@@ -34,19 +34,21 @@ grid_key_width = 1.8; // The width of the locking key between the grid tile
 					  //       to cause an issue, but something to be aware of in
 					  //       development work.
 
+grid_key_length = 6.0; // Length of the locking tab profile
+
 grid_tile_size = miniature_scale_size + 2*wall_width;   // The xy size of a tile on a baseplate
 grid_tile_diag = sqrt(2*grid_tile_size*grid_tile_size); // The size of the xy diagonal of a tile on a baseplate
 
 grid_base_size   = grid_tile_size + tile_tol;             // The xy size of a baseplate cell for a tile
 grid_base_diag   = sqrt(2*grid_base_size*grid_base_size); // The size of the xy diagonal of a baseplate cell for a tile
-grid_base_height = ceil_to_fdm_layer(max(lock_height, magnet_height), 2);   // The thickness of the baseplate
+grid_base_height = ceil_to_fdm_layer(max(lock_height, magnet_height), 4);   // The thickness of the baseplate + 2 FDM Layers
 
 // // Tile // //
 
-tile_height = ceil_to_fdm_layer(max( // The thickness of a tile
-	grid_base_height - 0.5,            // We expect most floor textures to raise the surface by ~0.5mm
-	magnet_height    + 2*fdm_layer_height  // We should ensure a thickness of at least 0.6mm above the magnet and in the pits
-));
+tile_height = max( // The thickness of a tile
+	ceil_to_fdm_layer(grid_base_height, -3),
+	ceil_to_fdm_layer(    magnet_height, 3),
+);
 tile_base_thickness = magnet_height; 
 tile_top_thickness  = tile_height-tile_base_thickness; // The thickness of the tile above the magnet
 

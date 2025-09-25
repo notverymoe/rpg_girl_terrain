@@ -168,12 +168,14 @@ module _girl_baseplate_inner() {
 module _girl_baseplate_magnet_slot(tolerance=0.15) {
 	mad_d = magnet_dia+2*tolerance;
 	mag_h = magnet_height+2*tolerance;
-	
-	translate([0,0,-tolerance])
-		cylinder(d=3.2, h=grid_base_height-magnet_height+2*tolerance);
-	
-	translate([0,0,grid_base_height-magnet_height])
-		cylinder(d=mad_d, h=mag_h);
+
+	translate([0,0,grid_base_height-magnet_height]) 
+	linear_extrude(mag_h) 
+	offset(-1)
+	offset( 1) {
+		circle(d=mad_d);
+		rotate( 45) square([mad_d/2, 20], center=true);
+	}
 }
 
 module _girl_baseplate_lattice(size, wall, radius) {
@@ -203,10 +205,9 @@ module _girl_baseplate_tile_key_single(wall, tolerance=0, profile_tolerance=-1) 
 	linear_extrude(wall+2*tolerance)
 	offset(profile_tolerance)
 	polygon([
-		[ 0.00,-0.25],
-		[ 3.00,-0.25],
-		[ 2.00, 1.00],
-		[-2.00, 1.00],
-		[-3.00,-0.25]
+		[ 3.00, -0.25],
+		[ 2.00,  1.00],
+		[-2.00,  1.00],
+		[-3.00, -0.25]
 	]);
 }
