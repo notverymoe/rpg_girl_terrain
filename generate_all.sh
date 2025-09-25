@@ -19,7 +19,7 @@ then
         mkdir -p ../../out/${d};
         cd ${d};
 
-        ls -w1 *.scad | xargs -n1 --max-procs=$CORES sh ../../../scripts/generate_all.sh $ROOT_DIR $d;
+        ls -w1 *.scad | xargs -n1 --max-procs=$CORES sh ../../../generate_all.sh $ROOT_DIR $d;
 
         cd ../;
     done
@@ -28,7 +28,7 @@ else
 
     if [[ $3 != _* ]]
     then
-        openscad --enable roof -q "$3" -o "$1/out/${2%/}/${3%.*}.stl";
+        openscad --enable roof --enable manifold -q "$3" -o "$1/out/${2%/}/${3%.*}.3mf";
         echo " - Processed ${2}${3%.*}";
     fi
 
