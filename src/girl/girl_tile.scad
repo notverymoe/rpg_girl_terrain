@@ -11,10 +11,10 @@ module girl_tile(size = 1, solid = false) {
 	x = is_num(size) ? size : size[0];
 	y = is_num(size) ? size : size[1];
 
-    infill_thickness = solid ? tile_base_thickness : tile_base_thickness/3;
+    infill_thickness = solid ? tile_thickness_base : tile_thickness_base/3;
     
     repeat([tile_size, tile_size, 1], x, y, 1, true) 
-	translate([0,0,tile_base_thickness])
+	translate([0,0,tile_thickness_base])
     rotate([180,0,0]) {
         // Tile Baseplate Key
         color("turquoise") 
@@ -22,7 +22,7 @@ module girl_tile(size = 1, solid = false) {
 
         // Tile Base Walls
         color("turquoise") 
-        linear_extrude(tile_base_thickness) 
+        linear_extrude(tile_thickness_base) 
         difference() {
             square(tile_size, center=true);
 
@@ -34,7 +34,7 @@ module girl_tile(size = 1, solid = false) {
         // Tile Top
         color("aqua") 
         mirror([0,0,1])
-        linear_extrude(tile_top_thickness) 
+        linear_extrude(tile_thickness_top) 
         square(tile_size, center=true);
 
         // Infill

@@ -2,9 +2,11 @@
 
 // // Settings // //
 
+scale_mm_per_m   = 38/1.7; // Units per Metre - Scientifically deterimed by looking at minatures
+
 // Tile shared
-tile_tol        =  0.25; // Spacing between tile toppers
-tile_wall_width =  8;    // The width of walls on a tile
+tile_tol         =  0.25; // Spacing between tile toppers
+tile_wall_width  =  8;    // The width of walls on a tile
 
 // Miniatures
 miniature_scale         = 32;    // The miniature scale of the system
@@ -37,8 +39,8 @@ plate_key_width  = 1.8; // The width of the locking key between the grid tile
 					        //       tile size for spacing for legacy compat. Unlikely
 					        //       to cause an issue, but something to be aware of in
 					        //       development work.
-plate_key_width_tol   = 0.3;
-plate_key_profile_tol = 0.4;
+plate_key_width_tol   = 0.2;
+plate_key_profile_tol = 0.3;
 
 // Frame
 plate_lattice_width = plate_lock_depth; // The width of the baseplate's inner frame
@@ -49,17 +51,21 @@ plate_height        = ceil_to_fdm_layer(    // The thickness of the baseplate
 
 // // Tile // //
 
-tile_height = max( // The thickness of a tile
+tile_thickness = max( // The thickness of a tile
 	ceil_to_fdm_layer(plate_height, -3),
 	ceil_to_fdm_layer(    plate_magnet_height, 3),
 );
-tile_base_thickness = plate_magnet_height; 
-tile_top_thickness  = tile_height-tile_base_thickness; // The thickness of the tile above the magnet
+tile_thickness_base = plate_magnet_height; 
+tile_thickness_top  = tile_thickness-tile_thickness_base; // The thickness of the tile above the 
+
+tile_wall_partial_height =  ceil_to_plate_layer(0.8*scale_mm_per_m);
 
 // // Util // //
 
 // Rounds the given value to the next fdm layer height, with optional base offset and additional layers
 function ceil_to_fdm_layer(value, add_layers = 0, base_offset = 0) = ceil((base_offset + value)/fdm_layer_height)*fdm_layer_height + add_layers*fdm_layer_height - base_offset;
+
+function ceil_to_plate_layer(value, add_layers = 0, base_offset = 0) = ceil((base_offset + value)/plate_height)*plate_height + add_layers*plate_height - base_offset;
 
 module mirror_copy(m) {
 	mirror(m) children();
