@@ -8,7 +8,7 @@ An open-source 32mm scale 3D printable interlocking modular terrain system writt
 
 The system is designed for 32mm scale miniatures and places them on a 50mm grid, making room for 8mm walls on each side while still leaving a spacious 1mm gap for all those pieces that extend beyond their box or are tricking to grab placed up against a wall. The 32mm scale was selected due to its adoption amongst digital miniature artists for the stylized detail it allows and the compatibility with more traditional 24mm/25mm/1" miniatures either with or without rescaling - compared with the minimum wall width issues present in scaling down a 32mm piece.
 
-It was created as an alternative to existing systems that contain either restrictive or unclear licensing terms, but fully aims to be a powerful system that stands on its own. You can find the licensing terms bellow, or in the (license)[license.md] file.
+It was created as an alternative to existing systems that contain either restrictive or unclear licensing terms, but fully aims to be a powerful system that stands on its own. You can find the licensing terms bellow, or in the (license)[LICENSE.md] file.
 
 ![Girl Terrain Tile](/media/tile_offset.jpg "Girl Terrain Tile")
 
@@ -47,13 +47,6 @@ files.
 Run `./scripts/generate_all.sh` to invoke openscad for each
 `src/sample` file, all files output will be written to `out/`
 under the subdirectory it was originally oranized by.
-
-The meshes generated will have some [degenerate faces](known_issues.md#BF_COLLINEAR), thus 
-far they haven't caused issues but you can cleanup the files
-using the `admesh` tool. Run `./scripts/fix_all.sh` to process
-each file with admesh and replace the file in-place with the
-fixed mesh. Ensure that each model is actually fixed manually,
-as the tool can't fix all issues.
 
 ### Windows/MacOSX
 
