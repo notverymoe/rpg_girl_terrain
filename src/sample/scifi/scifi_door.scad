@@ -6,11 +6,11 @@ scifi_door();
 
 module scifi_door(
 	size = [
-		grid_tile_size - 2*wall_width - 0.4, 
+		tile_size - 2*tile_wall_width - 0.4, 
 		50.0, 
-		wall_width/3
+		tile_wall_width/3
 	],
-	wall_height=grid_tile_size/3
+	wall_height=tile_size/3
 ) {
 	
 	mirror_copy([0,0,1])
@@ -28,13 +28,13 @@ module scifi_door(
 
 module _scifi_door_part(
 	size = [
-		grid_tile_size - wall_width - 0.4, 
+		tile_size - tile_wall_width - 0.4, 
 		50.0, 
-		wall_width/3
+		tile_wall_width/3
 	]
 ) {
 	
-	passage_o = wall_width/2;
+	passage_o = tile_wall_width/2;
 	passage_w = size[0] - 2*passage_o;
 	passage_h = size[1];
 	
