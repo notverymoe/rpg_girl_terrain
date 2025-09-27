@@ -6,7 +6,7 @@ An open-source 32mm scale 3D printable interlocking modular terrain system writt
 
 ## About 
 
-The system is designed for 32mm scale miniatures and places them on a 50mm grid, making room for 8mm walls on each side while still leaving a spacious 1mm gap for all those pieces that extend beyond their box or are tricking to grab placed up against a wall. The 32mm scale was selected due to its adoption amongst digital miniature artists for the stylized detail it allows and the compatibility with more traditional 24mm/25mm/1" miniatures either with or without rescaling - compared with the minimum wall width issues present in scaling down a 32mm piece.
+The system is designed for 32mm scale miniatures and places them on a 50mm grid, making room for 8mm walls on each side while still leaving a spacious 1mm gap for all those pieces that extend beyond their box or are tricking to grab placed up against a wall. The 32mm scale was selected due to its adoption amongst digital miniature artists for the stylized detail it allows and the compatibility with more traditional 24mm/25mm/1" miniatures either with or without rescaling.
 
 It was created as an alternative to existing systems that contain either restrictive or unclear licensing terms, but fully aims to be a powerful system that stands on its own. You can find the licensing terms bellow, or in the (license)[LICENSE.md] file.
 
