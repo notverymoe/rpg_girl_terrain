@@ -2,7 +2,7 @@
 
 An open-source 32mm scale 3D printable interlocking modular terrain system written in OpenScad.
 
-**Warning.** This is still in development & the main branch may in an untested state.
+**Warning.** This is still in development & the main branch may be in an untested state.
 
 ## About 
 
@@ -87,7 +87,7 @@ should help keep in upright.
 Currently there's a WIP sci-fi themed tile set included. We'd love to
 make more as this stabilizes.
 
-![SciFi Tile Set Preview](/media/scifi_wip.png "A scifi tile set with grates and pipes in the wall")
+![SciFi Tile Set Preview](/media/25_09_25_scifi_wip.png "A scifi tile set with grates and pipes in the wall")
 
 ## Future Goals 
 - Better documentation & code cleanliness
@@ -112,7 +112,7 @@ the rotation of a tile. The locking mechanism is also integrated
 into the underside of the baseplate, allowing them to be stacked
 for storage.
 
-![Locking Mechanism](/media/magnetic_lock.png "Locking Mechanism")
+![Locking Mechanism](/media/25_09_25_magnetic_lock.png "Locking Mechanism")
 
 A secondary purpose of magnetically attacked tiles is to allow
 for mixing printing methods. With this system it's intended that
@@ -133,8 +133,8 @@ thin, durable and printable with both 0.4mm nozzles and 0.6mm.
 
 So far it has only been tested with ABS, but I expect PLA should function well.
 
-![Locking Mechanism - Lock](/media/lock.png "Locking Mechanism - Lock")
-![Locking Mechanism - Slot](/media/slot.png "Locking Mechanism - Slot")
+![Locking Mechanism - Lock](/media/25_09_25_lock.png "Locking Mechanism - Lock")
+![Locking Mechanism - Slot](/media/25_09_25_lock_slot.png "Locking Mechanism - Slot")
 
 Additionally as is common, the positions of the slots are spaced by half a tile exactly. Making it possible to place a tile inbetween two others to create an offset.
 ![Girl Terrain build an with offset tile attached](/media/tile_offset.jpg "Girl Terrain Tile with an offset")

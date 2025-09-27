@@ -28,7 +28,7 @@ else
 
     if [[ $3 != _* ]]
     then
-        openscad --enable roof --enable manifold -q "$3" -o "$1/out/${2%/}/${3%.*}.3mf";
+        openscad --enable roof --enable manifold -q "$3" -o "$1/out/${2%/}/${3%.*}.obj";
         echo " - Processed ${2}${3%.*}";
     fi
 
