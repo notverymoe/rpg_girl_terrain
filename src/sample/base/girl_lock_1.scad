@@ -2,4 +2,4 @@
 
 use<../../girl/girl_lock.scad>;
 
-girl_lock(false);
+girl_lock(center=false, height_tol=0.1);

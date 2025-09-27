@@ -2,15 +2,20 @@
 
 include<girl_common.scad>;
 
+mirror_copy([1,-1,0])
+translate([plate_size/4-(plate_lock_depth+0.2),-plate_lock_depth,0]) {
+
 girl_lock();
 
-//color("blue")
-//translate([0,0,-1]) 
-//girl_slot();
+color("blue")
+translate([0,0,-1]) 
+girl_slot();
 
-module girl_lock(center=true) {
+}
+
+module girl_lock(center=true, height_tol=0) {
 	$fn=24;
-	linear_extrude(plate_lock_height, center=center, convexity=2)
+	linear_extrude(plate_lock_height-height_tol, center=center, convexity=2)
 	mirror_copy([0,1])
 	mirror_copy([1,0])
 	_girl_lock_part();
@@ -19,52 +24,70 @@ module girl_lock(center=true) {
 module girl_slot(center=true) {
 	$fn=24;
 	linear_extrude(plate_lock_height+0.2, center=center, convexity=2)
-	mirror_copy([0,1])
-	mirror_copy([1,0])
-	_girl_slot_part();
+	girl_slot_profile();
+}
+
+
+module girl_slot_profile() {
+	union() {
+		mirror_copy([0,1])
+		mirror_copy([1,0])
+		_girl_slot_part();
+
+		// Ensure connectivity
+		square([plate_lock_width+0.4, plate_lock_shoulder*2], center=true);
+	}
 }
 
 module _girl_slot_part() {
 	polygon([
-		[           0,      0.00],
-		[plate_lock_width/2+0.30, 0.00],
-		[plate_lock_width/2+0.30, plate_lock_shoulder+0.2],
-		[plate_lock_width/2-0.45, plate_lock_shoulder+0.2],
-		[plate_lock_width/2-0.75, 2.80],
-		[plate_lock_width/2-0.55, plate_lock_depth],
-		[plate_lock_width/2+0.50, plate_lock_depth],
-		[plate_lock_width/2+0.50, 8.25],
-		[plate_lock_width/2-5.00, 8.25],
-		[plate_lock_width/2-4.70, 2.75],
-		[plate_lock_width/2-5.00, 2.30],
-		[           0,      2.30],
+		[                     0, 0.00],
+		[plate_lock_width/2+0.2, 0.00],
+		[plate_lock_width/2+0.2, plate_lock_shoulder+0.2],
+		[plate_lock_width/2-0.7, plate_lock_shoulder+0.2],
+		[plate_lock_width/2-1.0, plate_lock_shoulder+0.5],
+		[plate_lock_width/2-1.0, plate_lock_depth       ],
+		[plate_lock_width/2+0.2, plate_lock_depth       ],
+		[plate_lock_width/2+0.2, plate_lock_depth   +3.3],
+		[plate_lock_width/2-5.2, plate_lock_depth   +3.3],
+		[plate_lock_width/2-5.2, plate_lock_shoulder+0.6],
+		[plate_lock_width/2-5.8, plate_lock_shoulder+0.2],
+		[                     0, plate_lock_shoulder+0.2],
 	]);
 }
 
 module _girl_lock_part() {
 	difference() {
 		polygon([
-			[           0,      0.00],
-			[plate_lock_width/2,      0.00],
-			[plate_lock_width/2,      plate_lock_shoulder],
-			[plate_lock_width/2-0.95, plate_lock_shoulder],
-			[plate_lock_width/2-0.60, plate_lock_depth+0.1],
-			[plate_lock_width/2,      plate_lock_depth+0.1],
-			[plate_lock_width/2-0.30, 6.20],
-			[plate_lock_width/2-2.15, 7.65],
-			[plate_lock_width/2-2.60, 7.90],
-			[plate_lock_width/2-3.00, 8.00],
-			[plate_lock_width/2-3.40, 7.90],
-			[plate_lock_width/2-3.60, 7.70],
-			[plate_lock_width/2-3.70, 7.45],
-			[plate_lock_width/2-3.25, 2.00],
-			[           0,      2.00],
+			[                 0,                     0.00],
+			[plate_lock_width/2,                     0.00],
+			[plate_lock_width/2,     plate_lock_shoulder ],
+			
+			[plate_lock_width/2-0.8, plate_lock_shoulder ],
+			[plate_lock_width/2-1.2, plate_lock_shoulder+0.4],
+			
+			[plate_lock_width/2-1.0, plate_lock_depth+0.1],
+			[plate_lock_width/2-0.2,     plate_lock_depth+0.3],
+			[plate_lock_width/2-0.8, plate_lock_depth+1.2],
+			[plate_lock_width/2-2.6, plate_lock_depth+2.8],
+			[plate_lock_width/2-3.1, plate_lock_depth+3.0],
+			[plate_lock_width/2-3.5, plate_lock_depth+3.1],
+			[plate_lock_width/2-3.9, plate_lock_depth+3.0],
+			[plate_lock_width/2-4.1, plate_lock_depth+2.8],
+			[plate_lock_width/2-4.2, plate_lock_depth+2.5],
+			
+			[plate_lock_width/2-3.8, plate_lock_shoulder+0.4],
+			[plate_lock_width/2-4.2, plate_lock_shoulder ],
+			
+			[                     0, plate_lock_shoulder ],
 		]);
 		polygon([
-			[plate_lock_width/2-2.10, 1.00],
-			[plate_lock_width/2-1.60, 5.50],
-			[plate_lock_width/2-2.50, 6.50],
-			[plate_lock_width/2-2.20, 1.00],
+			[plate_lock_width/2-1.5, plate_lock_shoulder/2],
+			[plate_lock_width/2-2.1, plate_lock_shoulder],
+			[plate_lock_width/2-1.8, plate_lock_depth+0.5],
+			[plate_lock_width/2-3.2, plate_lock_depth+2.0],
+			[plate_lock_width/2-2.8, plate_lock_shoulder],
+			[plate_lock_width/2-3.4, plate_lock_shoulder/2],
 		]);
 	}
 }

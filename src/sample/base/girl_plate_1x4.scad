@@ -2,6 +2,7 @@
 
 use<../../girl/girl_plate.scad>;
 
-girl_plate_map([
-    [1,1,1,1],
-], 0.0);
+girl_plate_map(
+    map=[[1,1,1,1]],
+    brim=0.0
+);

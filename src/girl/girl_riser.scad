@@ -5,67 +5,68 @@ use <girl_plate.scad>
 
 girl_riser();
 
-module girl_riser(height = tile_wall_partial_height, add_support=true) {
+module girl_riser(
+    height = tile_wall_partial_height,
+    add_support=true,
+    brim=0
+) {
 
-    intersection() {
-        union() {
-            _girl_plate_edge_slots(270);
-            _girl_plate_edge_slots(90);
-            _girl_plate_edge_slots(0);
-            _girl_plate_edge_slots(180);
+    // // Outer // //
 
-            translate([0,0,plate_height]) 
-            linear_extrude(height-plate_height, convexity=2)
-            difference() {
-                edge_thickness = plate_lock_depth + 0.2;
-                square(plate_size,                  center=true);
-                square(plate_size-2*edge_thickness, center=true);
-            }
+    // Outer - Base
+    _girl_frame_outer();
 
-            difference() {
-                union() {
-                    translate([0,0,height]) 
-                    _girl_plate_tile_key(plate_key_width);
-                    
-                    linear_extrude(height, convexity=3) {
-                        circle(d=plate_magnet_dia+4*fdm_ideal_wall);
-                        rotate_copy([0,0,90]) square([plate_size, plate_key_width + 2*plate_key_width_tol + 2*fdm_ideal_wall], center=true);
-                    }
-                }
+    // Outer - Mid/Top
+    translate([0,0,plate_height]) 
+    linear_extrude(height-plate_height) 
+    _girl_frame_profile_outer(hole_slots=false);
 
-                _girl_plate_tile_key(plate_key_width, plate_key_width_tol, plate_key_profile_tol);
+    // // Inner - Bottom // //
 
-                translate([0,0,-0.05])  {
-                    cylinder(d=plate_magnet_dia, h=plate_magnet_height+0.05, $fn=32);
+    // Walls
+    difference() {
+        // Flip for Magnet
+        translate([0,0,plate_height]) 
+        mirror([0,0,1]) 
+        _girl_frame_inner();
 
-                    linear_extrude(plate_magnet_height+0.05) 
-                    rotate(45) 
-                    square([plate_magnet_dia/2, plate_magnet_dia+5*fdm_ideal_wall], center=true);
-                }
-
-                translate([0,0,height-plate_magnet_height+0.05]) {
-                    cylinder(d=plate_magnet_dia, h=plate_magnet_height+0.05, $fn=32);
-
-                    linear_extrude(plate_magnet_height+0.05) 
-                    rotate(45) 
-                    square([plate_magnet_dia/2, plate_magnet_dia+5*fdm_ideal_wall], center=true);
-                }
-
-
-            }
-        }
-
-		linear_extrude(height+20, convexity=2)
-		offset( plate_lock_depth/2)
-		offset(-plate_lock_depth/2)
-		square([plate_size, plate_size], center=true);
+        // Cut Key 
+		_girl_plate_tile_key(plate_key_width, plate_key_width_tol, plate_key_profile_tol);
     }
 
+    // Magnet Support
     if (add_support) {
+        linear_extrude(plate_height-fdm_layer_height) 
         difference() {
-        cylinder(d=plate_magnet_dia-2*fdm_ideal_wall, h=plate_magnet_height-fdm_layer_height, $fn=32);
-        cylinder(d=plate_magnet_dia-3*fdm_ideal_wall, h=plate_magnet_height-fdm_layer_height, $fn=32);
+            circle(d=plate_magnet_dia-2*fdm_ideal_wall, $fn=16);
+            circle(d=plate_magnet_dia-3*fdm_ideal_wall, $fn=16);
         }
     }
 
+    // // Inner - Middle // //
+
+    translate([0,0,plate_height]) 
+    linear_extrude(height-2*plate_height) 
+    _girl_frame_profile_inner(hole_magnet=false);
+
+    // // Inner - Top // //
+
+    // Walls
+    translate([0,0,height-plate_height]) 
+    _girl_frame_inner();
+
+    // Key
+    translate([0,0,height]) 
+    _girl_plate_tile_key(plate_key_width);
+
+    // // Brim // //
+
+    if (brim > 0) {
+        linear_extrude(brim) {
+            translate([  plate_size/2,  plate_size/2]) circle(d=12);
+            translate([ -plate_size/2,  plate_size/2]) circle(d=12);
+            translate([ -plate_size/2, -plate_size/2]) circle(d=12);
+            translate([  plate_size/2, -plate_size/2]) circle(d=12);
+        }
+    }
 }

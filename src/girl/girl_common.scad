@@ -13,12 +13,12 @@ miniature_scale         = 32;    // The miniature scale of the system
 miniature_scale_spacing = 2 - tile_tol; // The flat space required for a miniature
 
 // Misc
-fdm_layer_height = 0.3; // Used for rounding the height of things to the nearest layer
+fdm_layer_height = 0.6; // Used for rounding the height of things to the nearest layer (divisible by 0.2/0.3mm layers)
 fdm_ideal_wall   = 1.2; // Used as a minimum where a wall of arbitrary thickness is required
 
 // // Core // //
-tile_size       = miniature_scale + miniature_scale_spacing + 2*tile_wall_width;   // The xy size of a tile on a baseplate
-plate_size  = tile_size + tile_tol;  // The xy size of a baseplate cell for a tile
+tile_size  = miniature_scale + miniature_scale_spacing + 2*tile_wall_width;   // The xy size of a tile on a baseplate
+plate_size = tile_size + tile_tol;  // The xy size of a baseplate cell for a tile
 
 // // Baseplate // //
 
@@ -27,10 +27,10 @@ plate_magnet_dia    = 6.2; // The magnet hole's diameter, including tolerances
 plate_magnet_height = 3.0; // The magnet hole's depth/height, including tolerances
 
 // Lock
-plate_lock_height   = 1.9; // The thickness of the locking tab
-plate_lock_depth    = 4.9; // The depth of the locking tab's tip, from the center of the tab
-plate_lock_shoulder = 2.0; // The depth of the locking tab's shoulder, from the center of the tab
-plate_lock_width    = 11;  // The full width of the locking tab slot, 
+plate_lock_height   = ceil_to_fdm_layer(2.0); // The thickness of the locking tab
+plate_lock_depth    = 5.5; // The depth of the locking tab's tip, from the center of the tab
+plate_lock_shoulder = 2.5; // The depth of the locking tab's shoulder, from the center of the tab
+plate_lock_width    = 12;  // The full width of the locking tab slot, 
 
 // Key
 plate_key_length = 6.0; // Length of the locking tab profile
@@ -43,17 +43,18 @@ plate_key_width_tol   = 0.2;
 plate_key_profile_tol = 0.3;
 
 // Frame
-plate_lattice_width = plate_lock_depth; // The width of the baseplate's inner frame
-plate_height        = ceil_to_fdm_layer(    // The thickness of the baseplate
-	max(plate_lock_height, plate_magnet_height), 
-	4
+plate_frame_width = plate_lock_depth;
+plate_lattice_width = plate_key_width + 2*plate_key_profile_tol + 2*fdm_ideal_wall; // The width of the baseplate's inner frame
+plate_height = max( // The thickness of the baseplate
+	ceil_to_fdm_layer(  plate_lock_height, 4),
+	ceil_to_fdm_layer(plate_magnet_height, 2),
 );
 
 // // Tile // //
 
 tile_thickness = max( // The thickness of a tile
-	ceil_to_fdm_layer(plate_height, -3),
-	ceil_to_fdm_layer(    plate_magnet_height, 3),
+	ceil_to_fdm_layer(plate_height,       -2),
+	ceil_to_fdm_layer(plate_magnet_height, 2),
 );
 tile_thickness_base = plate_magnet_height; 
 tile_thickness_top  = tile_thickness-tile_thickness_base; // The thickness of the tile above the 
@@ -90,4 +91,10 @@ module repeat(size, x, y, z, center) {
 			size[1]*j-off[1],
 			size[2]*k-off[2]
 		]) children();
+}
+
+module round(radius) {
+	offset( radius)
+	offset(-radius)
+	children();
 }

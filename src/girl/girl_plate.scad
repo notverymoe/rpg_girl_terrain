@@ -12,184 +12,78 @@ module girl_plate_map(m, brim=0.2) {
 			translate([x*plate_size, y*plate_size])
 			if (m[y][x]) {
 				girl_plate_single(
-					m[y][x+1] != 1,
-					m[y+1][x] != 1,
-					m[y][x-1] != 1,
-					m[y-1][x] != 1,
-					brim
+					x_p = m[y][x+1] != 1,
+					y_p = m[y+1][x] != 1,
+					x_n = m[y][x-1] != 1,
+					y_n = m[y-1][x] != 1,
+					brim  = brim
 				);
 			}
 		}
 	}
 
 	if (len(m) > 1 && len(m[0]) > 1) {
-		filler_w = plate_lattice_width*sqrt(2);
-		filler_h = plate_lattice_width*sqrt(2);
 
 		for(y = [1:len(m)-1]) {
 			for(x = [1:len(m[y])-1]) {
 				
-				solid_pxpy = m[y  ][x  ] == 1;
-				solid_pxny = m[y-1][x  ] == 1;
-				solid_nxpy = m[y  ][x-1] == 1;
-				solid_nxny = m[y-1][x-1] == 1;
+				solid_pxpy = m[y  ][x  ];
+				solid_pxny = m[y-1][x  ];
+				solid_nxpy = m[y  ][x-1];
+				solid_nxny = m[y-1][x-1];
+
+				connect = (( solid_pxpy &&  solid_nxny) && (!solid_pxny || !solid_nxpy)) 
+					   || ((!solid_pxpy || !solid_nxny) && ( solid_pxny &&  solid_nxpy));
 				
-				if ((solid_pxpy && solid_nxny) && (!solid_pxny || !solid_nxpy)) {
+				if (connect) {
 					translate([(x-0.5)*plate_size, (y-0.5)*plate_size])
-					rotate([0,0,-45])
-					linear_extrude(plate_height)
-					square([filler_w, filler_h], center=true);
-				}
-				
-				if ((!solid_pxpy || !solid_nxny) && (solid_pxny && solid_nxpy)) {
-					translate([(x-0.5)*plate_size, (y-0.5)*plate_size])
-					rotate([0,0,45])
-					linear_extrude(plate_height)
-					square([filler_w, filler_h], center=true);
+					linear_extrude(plate_height) 
+					difference() {
+						square(plate_frame_width*2, center=true);
+
+						round_amount = (solid_pxpy + solid_pxny + solid_nxpy + solid_nxny) > 2 ? 0 : plate_frame_width;
+
+						if (!solid_pxpy) round(round_amount) square(plate_size);
+						if (!solid_nxpy) round(round_amount) rotate( 90) square(plate_size);
+						if (!solid_nxny) round(round_amount) rotate(180) square(plate_size);
+						if (!solid_pxny) round(round_amount) rotate(270) square(plate_size);
+					}
 				}
 			}
 		}
 	}
-	
+
 }
 
-module girl_plate_single(x_p = 1, y_p = 1, x_n = 1, y_n = 1, brim = 0) {
-	$fn=24;
-	intersection() {
-		union() {
-			difference() {
-				_girl_plate_inner();
-				if (x_p) _girl_plate_edge(270);
-				if (x_n) _girl_plate_edge(90);
-				if (y_p) _girl_plate_edge(0);
-				if (y_n) _girl_plate_edge(180);
-			}
-			if (x_p) _girl_plate_edge_slots(270);
-			if (x_n) _girl_plate_edge_slots(90);
-			if (y_p) _girl_plate_edge_slots(0);
-			if (y_n) _girl_plate_edge_slots(180);
-		}
-		
-		x1 = x_n ? -plate_size/2 : -plate_size/2 - plate_lock_depth/2;
-		x2 = x_p ?  plate_size/2 :  plate_size/2 + plate_lock_depth/2;
-		y1 = y_n ? -plate_size/2 : -plate_size/2 - plate_lock_depth/2;
-		y2 = y_p ?  plate_size/2 :  plate_size/2 + plate_lock_depth/2;
-			
-		linear_extrude(plate_height+100, convexity=2)
-		offset( plate_lock_depth/2)
-		offset(-plate_lock_depth/2)
-		translate([x1, y1])
-		square([x2-x1,y2-y1]);
-	}
-	
-	if (brim > 0) {
-		if (x_p && y_p)
-			translate([plate_size/2,plate_size/2])
-			_girl_plate_brim_ear(brim);
-		
-		if (x_n && y_p)
-			translate([-plate_size/2,plate_size/2])
-			rotate(90)
-			_girl_plate_brim_ear(brim);
-		
-		if (x_n && y_n)
-			translate([-plate_size/2,-plate_size/2])
-			rotate(180)
-			_girl_plate_brim_ear(brim);
-		
-		if (x_p && y_n)
-			translate([plate_size/2,-plate_size/2])
-			rotate(270)
-			_girl_plate_brim_ear(brim);
-	}
-}
+module girl_plate_single(
+	x_p = true,
+	y_p = true,
+	x_n = true,
+	y_n = true,
 
-module _girl_plate_brim_ear(h, d = 16) {
-	linear_extrude(h)
+	brim = 0
+) {
+	_girl_frame_outer(
+		x_p = x_p,
+		x_n = x_n,
+		y_p = y_p,
+		y_n = y_n,
+	);
+
 	difference() {
-		union() {
-			circle(d=d);
-			polygon([
-				[      0, -d*0.75+0.1],
-				[   0.75, -d*0.75],
-				[    d/2,       0],
-				[      0,     d/2],
-				[-d*0.75,    0.75],
-				[-d*0.75+0.1,   0],
-			]);
-		}
-		translate([-d/2-1,-d/2-1]) square(d/2);
-	}
-}
-
-module _girl_plate_edge(a) {
-	// [BF_COLLINEAR] HACK: Ideally this should be `plate_lock_depth`, but if we make it exact we get degenerate faces
-	edge_thickness = plate_lock_depth + 0.2;
-
-	rotate(a)
-	translate([0,plate_size/2,0])
-	difference() {
-		translate([-plate_size/2, -edge_thickness, 0])
-			cube([plate_size, edge_thickness, plate_height]);
-		children();
-	}
-}
-
-module _girl_plate_edge_slots(a) {
-	_girl_plate_edge(a) {
-		translate([-plate_size/4,0, plate_height/2]) girl_slot();
-		translate([ plate_size/4,0, plate_height/2]) girl_slot();
-	}
-}
-
-module _girl_plate_inner() {
-	difference() {
-		linear_extrude(plate_height) {
-			
-			repeat([plate_size, plate_size,1], 2, 2, 1, true) 
-				_girl_plate_lattice(plate_size, plate_lattice_width, plate_magnet_dia/3*2);
-			
-			rotate_copy(90)
-			mirror_copy([1,0])
-			translate([plate_size/4, 0])
-			resize([
-				plate_key_length + 2*plate_key_profile_tol + 5*fdm_ideal_wall,
-				plate_key_width  + 2*plate_key_width_tol   + 4*fdm_ideal_wall
-			]) 
-			circle(r=plate_key_length, $fn=32);
-			
-		}
-		
-		_girl_plate_magnet_slot();
+		_girl_frame_inner();
 		_girl_plate_tile_key(plate_key_width, plate_key_width_tol, plate_key_profile_tol);
 	}
 
-	translate([0,0,plate_height])
-		_girl_plate_tile_key(plate_key_width);
-}
+	translate([0,0,plate_height]) 
+	_girl_plate_tile_key(plate_key_width);
 
-module _girl_plate_magnet_slot(tolerance=0.15) {
-	mad_d = plate_magnet_dia+2*tolerance;
-	mag_h = plate_magnet_height+2*tolerance;
-
-	translate([0,0,plate_height-plate_magnet_height]) 
-	linear_extrude(mag_h) 
-	offset(-1)
-	offset( 1) {
-		circle(d=mad_d);
-		rotate( 45) square([mad_d/2, 20], center=true);
-	}
-}
-
-module _girl_plate_lattice(size, wall, radius) {
-	intersection() {
-		offset(-radius)
-		offset( radius)
-		difference() {
-			square(size*26, center=true);
-			square(size-wall, center=true);
-		}
-		square(size, center=true);
+	linear_extrude(brim) 
+	if (brim > 0) {
+		if (x_p && y_p) translate([  plate_size/2,  plate_size/2]) circle(d=12);
+		if (x_n && y_p) translate([ -plate_size/2,  plate_size/2]) circle(d=12);
+		if (x_n && y_n) translate([ -plate_size/2, -plate_size/2]) circle(d=12);
+		if (x_p && y_n) translate([  plate_size/2, -plate_size/2]) circle(d=12);
 	}
 }
 
@@ -213,4 +107,169 @@ module _girl_plate_tile_key_single(wall, tolerance=0, profile_tolerance=-1) {
 		[-2.00,  1.00],
 		[-3.00, -0.25]
 	]);
+}
+
+
+module _girl_frame_inner() {
+	base_magnet = plate_height-plate_magnet_height;
+
+	linear_extrude(base_magnet)
+	_girl_frame_profile_inner(hole_magnet = false);
+
+	translate([0,0,base_magnet]) 
+	linear_extrude(plate_magnet_height)
+	_girl_frame_profile_inner(hole_magnet = true);
+}
+
+
+module _girl_frame_outer(
+	x_p = true,
+	y_p = true,
+	x_n = true,
+	y_n = true,
+) {
+	
+	base_lock = (plate_height-plate_lock_height)/2;
+
+	linear_extrude(base_lock)
+	_girl_frame_profile_outer(
+		hole_slots = false,
+		x_p = x_p,
+		x_n = x_n,
+		y_p = y_p,
+		y_n = y_n,
+	);
+
+	translate([0,0,base_lock]) 
+	linear_extrude(plate_lock_height)
+	_girl_frame_profile_outer(
+		hole_slots = true,
+		x_p = x_p,
+		x_n = x_n,
+		y_p = y_p,
+		y_n = y_n,
+	);
+
+	translate([0,0,base_lock+plate_lock_height]) 
+	linear_extrude(base_lock)
+	_girl_frame_profile_outer(
+		hole_slots = false,
+		x_p = x_p,
+		x_n = x_n,
+		y_p = y_p,
+		y_n = y_n,
+	);
+}
+
+module _girl_frame_profile_outer(
+	hole_slots = true,
+
+	x_p = true,
+	y_p = true,
+	x_n = true,
+	y_n = true,
+) {
+	if (y_p) _girl_frame_profile_side_slots(hole_slots);
+	if (x_n) rotate( 90) _girl_frame_profile_side_slots(hole_slots);
+	if (y_n) rotate(180) _girl_frame_profile_side_slots(hole_slots);
+	if (x_p) rotate(270) _girl_frame_profile_side_slots(hole_slots);
+
+	_girl_frame_profile_side_corner(x_p, y_p);
+	rotate( 90) _girl_frame_profile_side_corner(x_n, y_p);
+	rotate(180) _girl_frame_profile_side_corner(x_n, y_n);
+	rotate(270) _girl_frame_profile_side_corner(x_p, y_n);
+
+}
+
+module _girl_frame_profile_side_corner(
+	a,
+	b,
+) {
+	if (a && b) {
+		_girl_frame_profile_side_corner_rnd();
+	} else if (a || b) {
+		_girl_frame_profile_side_corner_sqr();
+	}
+}
+
+module _girl_frame_profile_side_corner_rnd() {
+	translate([plate_size/2-plate_frame_width,plate_size/2-plate_frame_width]) 
+	intersection() {
+		circle(r=plate_frame_width, $fn=32);
+		square(plate_frame_width);
+	}
+}
+
+module _girl_frame_profile_side_corner_sqr() {
+	translate([plate_size/2-plate_frame_width,plate_size/2-plate_frame_width]) 
+	square(plate_frame_width);
+}
+
+module _girl_frame_profile_side_slots(slot_hole=true) {
+	translate([0,plate_size/2-plate_frame_width/2]) 
+	difference() {
+		square([plate_size-2*plate_frame_width, plate_frame_width], center=true);
+		if (slot_hole) {
+			translate([ plate_size/4,plate_lock_depth/2]) girl_slot_profile();
+			translate([-plate_size/4,plate_lock_depth/2]) girl_slot_profile();
+		}
+	}
+}
+
+module _girl_frame_profile_inner(hole_magnet=true) {
+
+	intersection() {
+		offset( fdm_ideal_wall/2, $fn=16)
+		offset(-fdm_ideal_wall/2) 
+		{
+			_girl_frame_profile_magnet(hole=hole_magnet);
+			_girl_plate_profile_lattice(fdm_ideal_wall);
+		}
+
+		square(plate_size, center=true);
+	}
+}
+
+module _girl_plate_profile_lattice(size_adj=0) {
+	difference() {
+		union() {
+			square([plate_lattice_width, plate_size+size_adj], center=true);
+			square([plate_size+size_adj, plate_lattice_width], center=true);
+		}
+
+		offset(-0.01) // Ensure connectivity
+		_girl_frame_profile_magnet_solid();
+	}
+}
+
+module _girl_frame_profile_magnet(hole=false) {
+	if (hole) {
+		_girl_frame_profile_magnet_hole();
+	} else {
+		_girl_frame_profile_magnet_solid();
+	}
+}
+
+module _girl_frame_profile_magnet_hole() {
+	difference() {
+		// Magnet Frame
+		_girl_frame_profile_magnet_solid();
+	
+		// Magnet Hole
+		circle(d=plate_magnet_dia, $fn=64);
+
+		// Removal Hole
+		radius = (plate_magnet_dia+4*fdm_ideal_wall)/2;
+		y      = plate_lattice_width/2;
+		angle  = asin(y/radius);
+		x      = radius*cos(angle);
+		diag   = sqrt(pow(x-y, 2)*2); // Simplified
+		diag_l = min(plate_magnet_dia*0.8, diag); // Ensure holder can exist
+		rotate(45) square([2*radius, diag_l], center=true);
+	}
+
+}
+
+module _girl_frame_profile_magnet_solid() {
+	circle(d=plate_magnet_dia+4*fdm_ideal_wall, $fn=64);
 }
