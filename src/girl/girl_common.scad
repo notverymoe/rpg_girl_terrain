@@ -23,7 +23,7 @@ plate_size = tile_size + tile_tol;  // The xy size of a baseplate cell for a til
 // // Baseplate // //
 
 // Magnet
-plate_magnet_dia    = 6.2; // The magnet hole's diameter, including tolerances
+plate_magnet_dia    = 6.3; // The magnet hole's diameter, including tolerances
 plate_magnet_height = 3.0; // The magnet hole's depth/height, including tolerances
 
 // Lock
