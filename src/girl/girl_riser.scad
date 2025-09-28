@@ -11,49 +11,57 @@ module girl_riser(
     brim=0
 ) {
 
-    // // Outer // //
-
-    // Outer - Base
-    _girl_frame_outer();
-
-    // Outer - Mid/Top
-    translate([0,0,plate_height]) 
-    linear_extrude(height-plate_height) 
-    _girl_frame_profile_outer(hole_slots=false);
-
-    // // Inner - Bottom // //
-
-    // Walls
+    // // Base // ///
     difference() {
-        // Flip for Magnet
-        translate([0,0,plate_height]) 
-        mirror([0,0,1]) 
-        _girl_frame_inner();
+        union() {
+            // Inner - Flip for Magnet
+            translate([0,0,plate_height]) 
+            mirror([0,0,1]) 
+            _girl_frame_inner(top_adj=fdm_layer_height);
+
+            // Magnet Support
+            if (add_support) {
+                linear_extrude(plate_height-fdm_layer_height) 
+                difference() {
+                    circle(d=plate_magnet_dia-2*fdm_ideal_wall, $fn=16);
+                    circle(d=plate_magnet_dia-3*fdm_ideal_wall, $fn=16);
+                }
+            }
+
+            // Outer
+            _girl_frame_outer(base_adj=fdm_layer_height);
+
+            // Chamfer
+            translate([0,0,fdm_layer_height]) 
+            mirror([0,0,1]) 
+            _girl_plate_frame_chamfer(hole_magnet=true);
+        }
 
         // Cut Key 
 		_girl_plate_tile_key(plate_key_width, plate_key_width_tol, plate_key_profile_tol);
     }
 
-    // Magnet Support
-    if (add_support) {
-        linear_extrude(plate_height-fdm_layer_height) 
-        difference() {
-            circle(d=plate_magnet_dia-2*fdm_ideal_wall, $fn=16);
-            circle(d=plate_magnet_dia-3*fdm_ideal_wall, $fn=16);
-        }
-    }
+    // // Middle //  //
 
-    // // Inner - Middle // //
-
+    // Inner
     translate([0,0,plate_height]) 
     linear_extrude(height-2*plate_height) 
     _girl_frame_profile_inner(hole_magnet=false);
 
-    // // Inner - Top // //
+
+    // Outer
+    translate([0,0,plate_height]) 
+    linear_extrude(height-plate_height-fdm_layer_height) 
+    _girl_frame_profile_outer(hole_slots=false);
+
+    // // Top // //
 
     // Walls
     translate([0,0,height-plate_height]) 
-    _girl_frame_inner();
+    _girl_frame_inner(top_adj=fdm_layer_height);
+
+    translate([0,0,height-fdm_layer_height]) 
+    _girl_plate_frame_chamfer(hole_magnet=true);
 
     // Key
     translate([0,0,height]) 
