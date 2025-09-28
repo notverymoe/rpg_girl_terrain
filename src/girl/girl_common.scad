@@ -43,8 +43,10 @@ plate_key_width_tol   = 0.2;
 plate_key_profile_tol = 0.3;
 
 // Frame
-plate_frame_width = plate_lock_depth;
-plate_lattice_width = plate_key_width + 2*plate_key_profile_tol + 2*fdm_ideal_wall; // The width of the baseplate's inner frame
+
+// Account for chamfer with "fdm_layer_height"
+plate_frame_width   = plate_lock_depth + fdm_layer_height; 
+plate_lattice_width = plate_key_width + fdm_layer_height + 2*plate_key_profile_tol + 2*fdm_ideal_wall; // The width of the baseplate's inner frame
 plate_height = max( // The thickness of the baseplate
 	ceil_to_fdm_layer(  plate_lock_height, 4),
 	ceil_to_fdm_layer(plate_magnet_height, 2),

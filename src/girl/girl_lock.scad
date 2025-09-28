@@ -67,11 +67,10 @@ module _girl_lock_part() {
 			[plate_lock_width/2-1.2, plate_lock_shoulder+0.4],
 			
 			[plate_lock_width/2-1.0, plate_lock_depth+0.1],
-			[plate_lock_width/2-0.2,     plate_lock_depth+0.3],
+			[plate_lock_width/2,     plate_lock_depth+0.2],
 			[plate_lock_width/2-0.8, plate_lock_depth+1.2],
 			[plate_lock_width/2-2.6, plate_lock_depth+2.8],
 			[plate_lock_width/2-3.1, plate_lock_depth+3.0],
-			[plate_lock_width/2-3.5, plate_lock_depth+3.1],
 			[plate_lock_width/2-3.9, plate_lock_depth+3.0],
 			[plate_lock_width/2-4.1, plate_lock_depth+2.8],
 			[plate_lock_width/2-4.2, plate_lock_depth+2.5],
@@ -82,12 +81,13 @@ module _girl_lock_part() {
 			[                     0, plate_lock_shoulder ],
 		]);
 		polygon([
-			[plate_lock_width/2-1.5, plate_lock_shoulder/2],
-			[plate_lock_width/2-2.1, plate_lock_shoulder],
-			[plate_lock_width/2-1.8, plate_lock_depth+0.5],
-			[plate_lock_width/2-3.2, plate_lock_depth+2.0],
-			[plate_lock_width/2-2.8, plate_lock_shoulder],
-			[plate_lock_width/2-3.4, plate_lock_shoulder/2],
+			[plate_lock_width/2-1.7, plate_lock_shoulder/2],
+			[plate_lock_width/2-2.3, plate_lock_shoulder],
+			[plate_lock_width/2-2.1, plate_lock_depth+0.8],
+
+			[plate_lock_width/2-3.1, plate_lock_depth+1.8],
+			[plate_lock_width/2-2.7, plate_lock_shoulder],
+			[plate_lock_width/2-3.2, plate_lock_shoulder/2],
 		]);
 	}
 }
