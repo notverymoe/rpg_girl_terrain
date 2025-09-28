@@ -22,13 +22,29 @@ module girl_tile(size = 1, solid = false) {
 
         // Tile Base Walls
         color("turquoise") 
-        linear_extrude(tile_thickness_base) 
+        linear_extrude(tile_thickness_base-fdm_layer_height) 
         difference() {
             square(tile_size, center=true);
 
             offset( tile_base_wall/2, $fn=32) 
             offset(-tile_base_wall/2, $fn=32)
             square(tile_size-2*tile_base_wall, center=true);
+        }
+
+        // Chamfer
+        color("turquoise") 
+        translate([0,0,tile_thickness_base-fdm_layer_height]) 
+        intersection() {
+            roof()
+            difference() {
+                square(tile_size, center=true);
+
+                offset( tile_base_wall/2, $fn=32) 
+                offset(-tile_base_wall/2, $fn=32)
+                square(tile_size-2*tile_base_wall, center=true);
+            }
+            linear_extrude(fdm_layer_height) 
+            square(tile_size, center=true);
         }
 
         // Tile Top
